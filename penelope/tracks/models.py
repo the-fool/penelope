@@ -19,3 +19,10 @@ class Track(Base, TrackJsonSerializer):
     def __repr__(self):
         return "<Track({0}_{1})>".format(self.artist,self.title)
     
+    @staticmethod
+    def populate_tracks():
+        from . import get_id3
+        for data in get_id3:
+            print data
+        
+    
