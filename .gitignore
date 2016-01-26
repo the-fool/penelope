@@ -9,3 +9,5 @@ tmp
 git logs/*
 Chrome*
 Firefox*
+data.sqlite
+*.sqlite
