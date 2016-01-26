@@ -2,23 +2,27 @@ import os
 from mutagen.easyid3 import EasyID3 as ID3
 
 
-def get_id3(override_dir=False):
-    if override_dir:
-        dirs = override_dir
-    else:
+class ID3(object):
+    
+    @staticmethod
+    def get_id3(override_dir=False):
         from ..settings import MUSIC_DIRS
-        dirs = MUSIC_DIRS
-    for root in dirs:
-        for path in walk_dir(root, dirs):
-            print path
+        if override_dir:
+            ID3.dirs = override_dir
+        else:
+            ID3.dirs = MUSIC_DIRS
+        for root in ID3.dirs:
+            for path in ID3.walk_dir(root):
+                print path
 
-def walk_dir(root, dir_list):
-    for name in os.listdir(root):
-        path = os.path.join(root, name)
-        if os.path.isfile(path):
-            yield path
-        elif path not in dir_list:
-            for p in walk_dir(path, dir_list):
-                yield p
-        
-                
+    @staticmethod
+    def walk_dir(root):
+        for name in os.listdir(root):
+            path = os.path.join(root, name)
+            if os.path.isfile(path):
+                yield path
+            elif path not in ID3.dirs:
+                for p in ID3.walk_dir(path):
+                    yield p
+
+
