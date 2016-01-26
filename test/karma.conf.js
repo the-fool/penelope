@@ -4,7 +4,7 @@ module.exports = function (config) {
         basePath: '../',
         reporters: ['progress', 'junit'],
         files: [
-	    'app/js/**/*.js',
+	    'penelope/frontend/static/js/**/*.js',
 	    'test/unit/**/*.js'
 	],
 

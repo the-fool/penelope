@@ -1,4 +1,4 @@
 {
-	"directory":"penelope/static/bower_components",
+	"directory":"penelope/frontend/static/bower_components",
 	"interactive":false
 }
