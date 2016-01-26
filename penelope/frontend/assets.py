@@ -7,8 +7,7 @@ css_penelope = Bundle("less/penelope.less",
                        debug=False)
 
 #: consolidated css bundle
-css_all = Bundle("bower_components/bootstrap/dist/css/bootstrap.min.css", 
-                 "css/bootstrap-responsive.min.css")
+css_all = Bundle("bower_components/bootstrap/dist/css/bootstrap.min.css")
 
 #: vendor js bundle
 js_vendor = Bundle("bower_components/jquery/dist/jquery.js",
