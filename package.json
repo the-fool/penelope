@@ -1,0 +1,39 @@
+{
+  "name": "penelope",
+  "version": "0.0.0",
+  "description": "Remote control a home music station",
+  "main": "none",
+  "scripts": {
+    "test": "node node_modules/karma/bin/karma start test/karma.conf.js --reporters junit, dots",
+    "protractor" : "protractor test/protractor.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/the-fool/penelope.git"
+  },
+  "keywords": [
+    "cmus",
+    "python",
+    "flask",
+    "music",
+    "home-automation"
+  ],
+  "author": "Thomas Ruble",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/the-fool/penelope/issues"
+  },
+  "devDependencies": {
+    "karma": "~0.13.19",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-firefox-launcher": "^0.1.3",
+    "karma-jasmine": "~0.1.0",
+    "protractor": "^2.1.0",
+    "http-server": "^0.6.1",
+    "tmp": "0.0.23",
+    "bower": "^1.3.1",
+    "shelljs": "^0.2.6",
+    "karma-junit-reporter": "~0.3.8",
+    "webdriver-manager": "~8.0.0"
+  }
+}

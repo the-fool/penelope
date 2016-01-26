@@ -1,0 +1,11 @@
+*~
+*._*
+*.pyc
+#*#
+node_modules/
+bower_components/
+.DS_Store
+tmp
+git logs/*
+Chrome*
+Firefox*

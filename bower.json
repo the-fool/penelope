@@ -1,0 +1,35 @@
+{
+  "name": "penelope",
+  "description": "Remote control a home music station",
+  "main": "none",
+  "authors": [
+    "Thomas Ruble"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "cmus",
+    "python",
+    "flask",
+    "music",
+    "home-automation"
+  ],
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#~1.4.9",
+    "angular-route": "~1.4.9",
+    "angular-resource": "~1.4.9",
+    "bootstrap": "~3.3.6"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.9"
+  }
+}
