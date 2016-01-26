@@ -1,6 +1,9 @@
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+#: Set this list of directories to config the music search path
+MUSIC_DIRS = [os.path.expanduser('~/Music')]
+
 DEBUG = True
 SECRET_KEY = 'penelope'
 

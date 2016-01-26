@@ -12,17 +12,32 @@ class Track(Base, TrackJsonSerializer):
     pk = Column(Integer, primary_key=True)
     title = Column(String)
     length = Column(Integer)
-    albmun = Column(String)
+    album = Column(String)
     artist = Column(String)
     path = Column(String)
+    track_num = Column(Integer)
+    
     
     def __repr__(self):
         return "<Track({0}_{1})>".format(self.artist,self.title)
     
+    
     @staticmethod
     def populate_tracks():
+        from ..setings import MUSIC_DIR
         from . import get_id3
-        for data in get_id3:
-            print data
+        for track in get_id3:
+            print id3_to_sql(track)
+    
+    
+    @staticmethod
+    def id3_to_sql(a):
+        tag = a.tag
+        return Track(title=tag.title, 
+                  album=tag.album, 
+                  artist=tag.artist, 
+                  track_num=tag.track_num[0], 
+                  length=a.info.time_secs, 
+                  path=a.path)
         
     
