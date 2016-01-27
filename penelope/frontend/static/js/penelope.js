@@ -11,7 +11,8 @@ penelopeApp.config(['$routeProvider', function ($rp) {
     $rp.
       when('/jukebox', {
         templateUrl: 'static/partials/jukebox.html',
-        controller: 'JukeboxCtrl'
+        controller: 'JukeboxCtrl',
+        controllerAs: 'jb'
       }).
       otherwise({
         redirectTo: '/jukebox'
