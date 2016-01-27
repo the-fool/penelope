@@ -11,3 +11,4 @@ Chrome*
 Firefox*
 data.sqlite
 *.sqlite
+migrations/
