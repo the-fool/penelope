@@ -1,10 +1,14 @@
 alembic==0.7.7
 blinker==1.4
+dominate==2.1.16
+eyeD3==0.7.9
 Flask==0.10.1
 Flask-Alembic==1.2.1
 Flask-Assets==0.11
+Flask-Bootstrap==3.3.5.7
 Flask-Login==0.3.2
 Flask-Mail==0.9.1
+Flask-Migrate==1.7.0
 Flask-Principal==0.4.0
 Flask-Script==2.0.5
 Flask-Security==1.7.5
@@ -14,9 +18,11 @@ itsdangerous==0.24
 Jinja2==2.8
 Mako==1.0.3
 MarkupSafe==0.23
+mutagen==1.31
 passlib==1.6.5
 sh==1.11
 SQLAlchemy==1.0.11
+visitor==0.1.2
 webassets==0.11.1
 Werkzeug==0.11.3
 wheel==0.26.0
