@@ -1,8 +1,9 @@
+# -*- coding: utf_8 -*-
 
 from sqlalchemy import Column, Float, Integer, String, Text
 
 from ..helpers import JsonSerializer
-from ..database import Base
+from ..database import Base, init_db, db_session as sess 
 
 class TrackJsonSerializer(JsonSerializer):
     __json_hidden__ = ['path']
@@ -24,18 +25,41 @@ class Track(Base, TrackJsonSerializer):
     
     
     @staticmethod
-    def populate_tracks():
+    def populate_tracks(custom_dir = None):
+        def add_tracks(tentative):
+            try:
+                sess.commit()
+                for t in tentative:
+                    print "[Added] " + t
+                del tentative[:]
+            except:
+                sess.rollback()
+                raise
+    
+        if not custom_dir:
+            init_db()
         from . import TrackHandler 
-        for track, path in TrackHandler.get_id3():
+        
+        i = 0
+        phase = 10
+        tentative = []
+        for track, path in TrackHandler.get_id3(custom_dir):
             # the generator may throw exceptions and exit yielding None
             if not track:
                 continue
             new_track = Track.id3_to_sql(track)
             new_track.path = path
-            print new_track
-            #print id3_to_sql(track)
-    
-    
+            sess.add(new_track)
+            tentative.append(new_track.path)
+            # what if I am loading 10,000 songs?
+            # Should it periodically commit changes?
+            if i == 0:
+                add_tracks(tentative)
+            i = (i + 1) % phase
+        add_tracks(tentative)
+        
+                    
+                
     @staticmethod
     def id3_to_sql(t):
         tag = t.tags

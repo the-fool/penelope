@@ -16,7 +16,7 @@ class TrackHandler(object):
             for path in TrackHandler.walk_dir(root):
                 try:
                     track = load(path, easy=True)
-                    yield track, path
+                    yield track, unicode(path, 'utf-8')
                 except:
                     pass
                 
