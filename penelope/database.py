@@ -7,7 +7,7 @@ import settings
 
 
 engine = create_engine(settings.SQLALCHEMY_DATABASE_URI, convert_unicode=True)
-#engine.raw_connection().connection.text_factory = lambda x: unicode(x, 'utf-8', 'ignore')
+engine.raw_connection().connection.text_factory = lambda x: unicode(x, 'utf-8', 'ignore')
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=True, bind=engine))
 
 Base = declarative_base()

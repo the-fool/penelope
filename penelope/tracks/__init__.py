@@ -1,7 +1,14 @@
 import os, sys
 from mutagen import File as load
 
+from .models import Track
+from ..core import Service
 
+
+class TracksService(Service):
+    __model__ = Track
+    
+    
 class TrackHandler(object):
     dirs = []
     
