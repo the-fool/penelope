@@ -1,19 +1,25 @@
-import os
-from mutagen.easyid3 import EasyID3 as ID3
+import os, sys
+from mutagen import File as load
 
 
-class ID3(object):
+class TrackHandler(object):
+    dirs = []
     
     @staticmethod
     def get_id3(override_dir=False):
         from ..settings import MUSIC_DIRS
         if override_dir:
-            ID3.dirs = override_dir
+            TrackHandler.dirs = override_dir
         else:
-            ID3.dirs = MUSIC_DIRS
-        for root in ID3.dirs:
-            for path in ID3.walk_dir(root):
-                print path
+            TrackHandler.dirs = MUSIC_DIRS
+        for root in TrackHandler.dirs:
+            for path in TrackHandler.walk_dir(root):
+                try:
+                    track = load(path, easy=True)
+                    yield track, path
+                except:
+                    pass
+                
 
     @staticmethod
     def walk_dir(root):
@@ -21,8 +27,8 @@ class ID3(object):
             path = os.path.join(root, name)
             if os.path.isfile(path):
                 yield path
-            elif path not in ID3.dirs:
-                for p in ID3.walk_dir(path):
+            elif path not in TrackHandler.dirs:
+                for p in TrackHandler.walk_dir(path):
                     yield p
 
 

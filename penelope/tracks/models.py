@@ -1,3 +1,4 @@
+
 from sqlalchemy import Column, Float, Integer, String, Text
 
 from ..helpers import JsonSerializer
@@ -19,25 +20,29 @@ class Track(Base, TrackJsonSerializer):
     
     
     def __repr__(self):
-        return "<Track({0}_{1})>".format(self.artist,self.title)
+        return u"<Track({0}: {1})>".format(self.artist,self.title).encode('utf-8')
     
     
     @staticmethod
     def populate_tracks():
-        from ..setings import MUSIC_DIR
-        from . import get_id3
-        for track in get_id3:
-            print id3_to_sql(track)
+        from . import TrackHandler 
+        for track, path in TrackHandler.get_id3():
+            # the generator may throw exceptions and exit yielding None
+            if not track:
+                continue
+            new_track = Track.id3_to_sql(track)
+            new_track.path = path
+            print new_track
+            #print id3_to_sql(track)
     
     
     @staticmethod
-    def id3_to_sql(a):
-        tag = a.tag
-        return Track(title=tag.title, 
-                  album=tag.album, 
-                  artist=tag.artist, 
-                  track_num=tag.track_num[0], 
-                  length=a.info.time_secs, 
-                  path=a.path)
+    def id3_to_sql(t):
+        tag = t.tags
+        return Track(title=tag['title'][0], 
+                  album=tag['album'][0], 
+                  artist=tag['artist'][0], 
+                  track_num=tag['tracknumber'][0].split('/')[0], # tracknumber = '5/12' 
+                  length=int(t.info.length))
         
     
