@@ -6,3 +6,7 @@ penelopeControllers.controller('JukeboxCtrl', ['Track',
     function(Track) {
         this.tracks = Track.query();
     }]);
+
+penelopeControllers.controller('LibraryCtrl',[function() {
+    
+}]);

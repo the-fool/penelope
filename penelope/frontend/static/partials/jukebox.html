@@ -1,9 +1,6 @@
 <h3>Juke-partial</h3>
 <table class="table table-condensed">
-    <tr ng-repeat="track in jb.tracks.data">
-        <td>{{track.artist}}</td>
-        <td>{{track.album}}</td>
-        <td>{{track.title}}</td>
-        <td>{{track.length | seconds}}</td>
-    </tr>
+    <tbody>
+    <tr master-row ng-repeat="track in jb.tracks.data"></tr>
+    </tbody>
 </table>
