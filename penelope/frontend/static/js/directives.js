@@ -8,3 +8,10 @@ penelopeDirectives.directive('masterRow', function() {
         restrict: 'A',
     };
 });
+
+penelopeDirectives.directive('masterHead', function() {
+    return {
+        templateUrl: '/static/partials/templates/master_head.html',
+        restrict: 'A'
+    };
+});
