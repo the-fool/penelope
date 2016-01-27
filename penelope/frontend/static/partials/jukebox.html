@@ -1,2 +1,6 @@
 <h3>Juke-partial</h3>
-<p>{{jb.tracks}}</p>
+<table>
+    <tr ng-repeat="track in jb.tracks.data">
+        <td>{{track.title}}</td>
+    </tr>
+</table>
