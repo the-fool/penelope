@@ -21,7 +21,7 @@ class Track(Base, TrackJsonSerializer):
     
     
     def __repr__(self):
-        return u"<Track({0}: {1})>".format(self.artist,self.title).encode('utf-8')
+        return u"<Track({0}: {1})>".format(self.artist,self.title)
     
     
     @staticmethod

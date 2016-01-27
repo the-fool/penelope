@@ -31,7 +31,7 @@ def route(bp, *args, **kwargs):
             if isinstance(rv, tuple):
                 sc = rv[1]
                 rv = rv[0]
-            return jsonify(dict(data=rv)), sc, {'Content-Type': 'charset=utf-8'}
+            return jsonify(dict(data=rv)), sc, {'Content-Type': 'application/json; charset=utf-8'}
         return f
 
     return decorator

@@ -11,10 +11,10 @@ css_all = Bundle("bower_components/bootstrap/dist/css/bootstrap.min.css")
 
 #: vendor js bundle
 js_vendor = Bundle("bower_components/jquery/dist/jquery.js",
+                   "bower_components/angular/angular.js",
                    "bower_components/bootstrap/dist/js/bootstrap.js",
                    "bower_components/angular-route/angular-route.js",
-                   "bower_components/angular-resource/angular-resource.js",
-                   "bower_components/angular/angular.js")
+                   "bower_components/angular-resource/angular-resource.js")
 
 #: application js bundle
 js_main = Bundle("js/*.js")
