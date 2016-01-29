@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Author: Thomas Ruble
 from flask.ext.migrate import Migrate, MigrateCommand
 from flask.ext.script import Manager, Shell
 
