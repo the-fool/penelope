@@ -12,3 +12,4 @@ Firefox*
 data.sqlite
 *.sqlite
 migrations/
+venv/
