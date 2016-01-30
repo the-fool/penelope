@@ -8,6 +8,7 @@ from ..database import Base, init_db, db_session as sess
 class TrackJsonSerializer(JsonSerializer):
     __json_hidden__ = ['path']
 
+
 class Track(Base, TrackJsonSerializer):
     __tablename__ = 'Tracks'
     __table_args__ = {'sqlite_autoincrement': True}
@@ -18,10 +19,10 @@ class Track(Base, TrackJsonSerializer):
     artist = Column(String)
     path = Column(String)
     track_num = Column(Integer)
-    
+    year = Column(Integer)
     
     def __repr__(self):
-        return u"<Track({0}: {1})>".format(self.artist,self.title)
+        return u"<Track:{0} - {1}>".format(self.artist,self.title)
     
     
     @staticmethod
@@ -41,7 +42,7 @@ class Track(Base, TrackJsonSerializer):
         from . import TrackHandler 
         
         i = 0
-        phase = 10
+        phase = 10 # tuning number, meant to balance between efficiency & fault tolerance
         tentative = []
         for track, path in TrackHandler.get_id3(custom_dir):
             # the generator may throw exceptions and exit yielding None
@@ -63,8 +64,10 @@ class Track(Base, TrackJsonSerializer):
     @staticmethod
     def id3_to_sql(t):
         tag = t.tags
+        # mutagen File() object has tag attribute with elements of type list
         return Track(title=tag['title'][0], 
-                  album=tag['album'][0], 
+                  album=tag['album'][0],
+                  year=int(tag['date'][0].split('-')[0]),  # date = '2012-3-29'
                   artist=tag['artist'][0], 
                   track_num=tag['tracknumber'][0].split('/')[0], # tracknumber = '5/12' 
                   length=int(t.info.length))
