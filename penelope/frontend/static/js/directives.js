@@ -6,10 +6,14 @@ penelopeDirectives.directive('masterRow', function () {
     return {
         templateUrl: '/static/partials/templates/master_row.html',
         restrict: 'A',
-        scope: {track: '='},
+        scope: {
+            track: '=',
+            onClick: '&',
+        },
         link: function ($scope, element, attrs) {
             element.bind('click', function () {
-                element.html('You clicked me!');
+                element.css('background-color', 'blue');
+                $scope.onClick();
             });
             element.bind('mouseenter', function () {
                 element.css('background-color', 'yellow');
