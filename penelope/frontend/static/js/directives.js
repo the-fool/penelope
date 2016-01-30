@@ -13,7 +13,7 @@ penelopeDirectives.directive('masterRow', function () {
         link: function ($scope, element, attrs) {
             element.bind('click', function () {
                 element.css('background-color', 'blue');
-                $scope.onClick();
+                $scope.onClick()($scope.track);
             });
             element.bind('mouseenter', function () {
                 element.css('background-color', 'yellow');
