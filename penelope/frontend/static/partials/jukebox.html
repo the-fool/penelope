@@ -1,11 +1,13 @@
 <h3>Juke-partial</h3>
+
+
 <table class="table table-condensed" fixed-header table-height="300px">
     <thead>
-        <tr master-head></tr>
+        <tr playlist-head></tr>
     </thead>
     <tbody>
         <tr ng-repeat="track in jb.tracks.data" 
-            master-row 
+            playlist-row 
             track="track"
             on-click="jb.clickTrack"></tr>
     </tbody>

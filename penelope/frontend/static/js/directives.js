@@ -2,9 +2,9 @@
 
 var penelopeDirectives = angular.module('penelopeDirectives', []);
 
-penelopeDirectives.directive('masterRow', function () {
+penelopeDirectives.directive('playlistRow', function () {
     return {
-        templateUrl: '/static/partials/templates/master_row.html',
+        templateUrl: '/static/partials/templates/playlist_row.html',
         restrict: 'A',
         scope: {
             track: '=',
@@ -25,9 +25,9 @@ penelopeDirectives.directive('masterRow', function () {
     };
 });
 
-penelopeDirectives.directive('masterHead', function () {
+penelopeDirectives.directive('playlistHead', function () {
     return {
-        templateUrl: '/static/partials/templates/master_head.html',
+        templateUrl: '/static/partials/templates/playlist_head.html',
         restrict: 'A'
     };
 });
