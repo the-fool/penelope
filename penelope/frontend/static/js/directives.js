@@ -6,6 +6,7 @@ penelopeDirectives.directive('masterRow', function () {
     return {
         templateUrl: '/static/partials/templates/master_row.html',
         restrict: 'A',
+        scope: {track: '='},
         link: function ($scope, element, attrs) {
             element.bind('click', function () {
                 element.html('You clicked me!');

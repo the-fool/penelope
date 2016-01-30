@@ -4,7 +4,6 @@
         <tr master-head></tr>
     </thead>
     <tbody>
-    <tr master-row ng-repeat="track in jb.tracks.data"></tr>
-         <tr master-row ng-repeat="track in jb.tracks.data"></tr>
+        <tr ng-repeat="track in jb.tracks.data" master-row track="track"></tr>
     </tbody>
 </table>
