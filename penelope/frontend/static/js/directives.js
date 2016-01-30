@@ -2,6 +2,9 @@
 
 var penelopeDirectives = angular.module('penelopeDirectives', []);
 
+
+/* --- PLAYLIST ROW --- */
+
 penelopeDirectives.directive('playlistRow', function () {
     return {
         templateUrl: '/static/partials/templates/playlist_row.html',
@@ -25,9 +28,21 @@ penelopeDirectives.directive('playlistRow', function () {
     };
 });
 
+/* --- PLAYLIST HEAD --- */
+
 penelopeDirectives.directive('playlistHead', function () {
     return {
         templateUrl: '/static/partials/templates/playlist_head.html',
         restrict: 'A'
+    };
+});
+
+
+/* --- LIBRARY SEARCH --- */
+
+penelopeDirectives.directive('librarySearch', function() {
+    return {
+        restrict: 'EA',
+        templateUrl: '/static/partials/templates/library_search.html',
     };
 });

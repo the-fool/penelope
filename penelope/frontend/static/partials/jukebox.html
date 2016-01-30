@@ -1,14 +1,14 @@
 <h3>Juke-partial</h3>
 
-
+<library-search></library-search>
 <table class="table table-condensed" fixed-header table-height="300px">
     <thead>
         <tr playlist-head></tr>
     </thead>
     <tbody>
-        <tr ng-repeat="track in jb.tracks.data" 
+        <tr ng-repeat="piste in jb.tracks.data | filter:searchFilter track by piste.pk" 
             playlist-row 
-            track="track"
+            track="piste"
             on-click="jb.clickTrack"></tr>
     </tbody>
 </table>
