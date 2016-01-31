@@ -13,3 +13,4 @@ data.sqlite
 *.sqlite
 migrations/
 venv/
+libcache.json

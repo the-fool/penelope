@@ -14,6 +14,12 @@ app = create_app()
 manager = Manager(app)
 migrate = Migrate(app, db)
 
+def refresh_data():
+    init_db()
+    Track.populate_tracks()
+    Album.populate_albums()
+    init_library()
+
 def make_shell_context():
     return dict(app=app, 
                 Track=Track, 
@@ -21,7 +27,8 @@ def make_shell_context():
                 sess=db_session, 
                 init_db=init_db,
                 init_library=init_library,
-                get_id3=TrackHandler.get_id3)
+                get_id3=TrackHandler.get_id3,
+                refresh_data=refresh_data)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))

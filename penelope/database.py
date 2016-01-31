@@ -5,10 +5,6 @@ from sqlalchemy.ext.declarative import declarative_base
 
 import settings
 
-# JSON of entire library cached in memory
-# this is the fundamental return from initial API get calls to the app
-# and since it rarely changes, we may as well avoid troubling our database for it
-LIBRARY_CACHE = ''
 
 engine = create_engine(settings.SQLALCHEMY_DATABASE_URI, convert_unicode=True)
 engine.raw_connection().connection.text_factory = lambda x: unicode(x, 'utf-8', 'ignore')
@@ -24,6 +20,11 @@ def init_db():
 
 
 def init_library(to_add=None):
+    """ Write a JSON representation of the library to disk.
+    
+        Since this data is unlikely to change often, it is best to cache
+        and to avoid using database queries                      
+    """
     # TO DO -- let clients upload and add folders to the library
     
     from .services import tracks, albums
@@ -33,5 +34,9 @@ def init_library(to_add=None):
         entry = a.to_json()
         entry['tracks'] = [t.to_json(hidden=['album', 'artist', 'year']) for t in tracks.find(album=a.name).all()]
         rv.append(entry)
-    print rv
+    
+    import codecs
+    import json
+    with codecs.open(settings.LIBRARY_CACHE, 'w', 'utf-8') as cache:
+        cache.write(json.dumps(rv, separators=(',',':')))
         
