@@ -7,8 +7,9 @@ from penelope.api import create_app
 from penelope.core import db                        
 from penelope.models import *
 from penelope.tracks import TrackHandler
-from penelope.database import init_db, db_session
-
+from penelope.database import init_db, init_library, db_session
+from penelope.services import *
+    
 app = create_app()
 manager = Manager(app)
 migrate = Migrate(app, db)
@@ -19,6 +20,7 @@ def make_shell_context():
                 Album=Album, 
                 sess=db_session, 
                 init_db=init_db,
+                init_library=init_library,
                 get_id3=TrackHandler.get_id3)
 
 

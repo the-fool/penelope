@@ -7,6 +7,10 @@ from ..database import Base, init_db, db_session as sess
 
 class TrackJsonSerializer(JsonSerializer):
     __json_hidden__ = ['path']
+    
+    def to_json(self, hidden=[]):
+        self.__json_hidden__.extend(hidden)
+        return super(TrackJsonSerializer, self).to_json()
 
 
 class Track(Base, TrackJsonSerializer):
