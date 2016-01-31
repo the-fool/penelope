@@ -1,23 +1,41 @@
-#playlist {
-    table-layout: fixed;
-    width: 100vh;
-    font-size: smaller;
+.fixed_headers {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
 
-td { word-wrap: break-word;}
-
-td.title, th.title {
-    width: 30vh;
+.fixed_headers th,
+.fixed_headers td {
+  padding: 5px;
+  text-align: left;
 }
-
-td.artist,th.artist {
-    width: 29vh; /* a hack -- I need to find a way to determine exact widths programatically */
+.fixed_headers td.title,
+.fixed_headers th.title {
+  min-width: 200px;
 }
-
-td.album,th.album {
-    width: 29vh; 
+.fixed_headers td.artist,
+.fixed_headers th.artist {
+  min-width: 200px;
 }
-
-td.length,th.length {
-    width: 10vh;
+.fixed_headers td.album,
+.fixed_headers th.album {
+  min-width: 200px;
+}
+.fixed_headers td.length,
+.fixed_headers th.length {
+  width: 150px;
+}
+.fixed_headers thead {
+  background-color: #333333;
+  color: #fdfdfd;
+}
+.fixed_headers thead tr {
+  display: block;
+  position: relative;
+}
+.fixed_headers tbody {
+  display: block;
+  overflow: auto;
+  width: 100%;
+  height: 300px;
 }
