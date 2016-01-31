@@ -1,3 +1,8 @@
+ul {
+    clear: both;
+    list-style-type: none;
+}
+
 .fixed_headers {
   width: 100%;
   table-layout: fixed;

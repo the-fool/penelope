@@ -28,18 +28,20 @@ penelopeDirectives.directive('playlistRow', function () {
     };
 });
 
-/* --- PLAYLIST HEAD --- */
+/* --- PLAYLIST VIEW --- */
 
-penelopeDirectives.directive('playlistHead', function () {
+penelopeDirectives.directive('playlistView', [function() {
     return {
-        templateUrl: penelopeDirectives.baseTemplateUrl + 'playlist_head.html',
-        restrict: 'A'
-    };
-});
+        templateUrl: penelopeDirectives.baseTemplateUrl + 'playlist_view.html'
+    }
+}]);
 
 penelopeDirectives.directive('libraryView', ['Library', function(Lib) {
     function ctrl() {
         this.packages = Lib.query();
+        this.expand = function(pack) {
+            pack.show = !pack.show;
+        }
     }
     
     return {

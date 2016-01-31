@@ -1,5 +1,15 @@
 <ul>
-    <li ng-repeat="pack in libctrl.packages">
+    <li ng-repeat-start="pack in libctrl.packages" 
+        ng-click="libctrl.expand(pack)"
+        ng-show="([pack] | filter:searchFilter).length > 0">
         {{pack.artist}} - {{pack.name}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
     </li>
+    <li ng-repeat-end ng-show="pack.show">
+        <ul>
+            <li ng-repeat="t in pack.tracks  | orderBy: t.track_num">
+                {{t.track_num}}. {{t.title}}
+            </li>
+        </ul>
+    </li>
+    
 </ul>

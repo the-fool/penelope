@@ -9,15 +9,5 @@
     <library-view></library-view>
 </div>
 <div class="col-md-8">
-<table id="playlist" class="fixed_headers">
-    <thead>
-        <tr playlist-head></tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="piste in jb.tracks.data" 
-            ng-show="([piste] | filter:searchFilter).length > 0"  
-            playlist-row track="piste"
-            on-click="jb.clickTrack"></tr>
-    </tbody>
-</table>
+    <playlist-view></playlist-view>
 </div>
