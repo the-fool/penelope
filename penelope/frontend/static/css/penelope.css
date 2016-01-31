@@ -1,0 +1,23 @@
+#playlist {
+    table-layout: fixed;
+    width: 100vh;
+    font-size: smaller;
+}
+
+td { word-wrap: break-word;}
+
+td.title, th.title {
+    width: 30vh;
+}
+
+td.artist,th.artist {
+    width: 29vh; /* a hack -- I need to find a way to determine exact widths programatically */
+}
+
+td.album,th.album {
+    width: 29vh; 
+}
+
+td.length,th.length {
+    width: 10vh;
+}
