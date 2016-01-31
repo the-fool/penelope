@@ -3,14 +3,16 @@
 var penelopeControllers = angular.module('penelopeControllers', []);
 
 penelopeControllers.controller('JukeboxCtrl', ['Track', 
-    function(Track) {
-        this.tracks = Track.query();
+    function(Tracks) {
+        this.tracks = Tracks.query();
+        
         
         this.clickTrack = function(track) {
           alert('clicked ' + track.title);  
         };
     }]);
 
-penelopeControllers.controller('LibraryCtrl',[function() {
+
+penelopeControllers.controller('PlaylistCtrl', [function() {
     
 }]);

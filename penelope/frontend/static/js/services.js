@@ -9,3 +9,11 @@ penelopeServices.factory('Track', ['$resource',
         update: {method: 'POST'}
     });
 }]);
+
+penelopeServices.factory('Library', ['$resource', 
+  function($r) {
+    return $r('api/library', {}, {
+        query: {method:'GET', isArray: true},
+        update: {method: 'POST'}
+    });
+}]);

@@ -1,13 +1,13 @@
 'use strict';
 
 var penelopeDirectives = angular.module('penelopeDirectives', []);
-
+penelopeDirectives.baseTemplateUrl = '/static/partials/templates/';
 
 /* --- PLAYLIST ROW --- */
 
 penelopeDirectives.directive('playlistRow', function () {
     return {
-        templateUrl: '/static/partials/templates/playlist_row.html',
+        templateUrl: penelopeDirectives.baseTemplateUrl + 'playlist_row.html',
         restrict: 'A',
         scope: {
             track: '=',
@@ -32,17 +32,31 @@ penelopeDirectives.directive('playlistRow', function () {
 
 penelopeDirectives.directive('playlistHead', function () {
     return {
-        templateUrl: '/static/partials/templates/playlist_head.html',
+        templateUrl: penelopeDirectives.baseTemplateUrl + 'playlist_head.html',
         restrict: 'A'
     };
 });
 
+penelopeDirectives.directive('libraryView', ['Library', function(Lib) {
+    function ctrl() {
+        this.packages = Lib.query();
+    }
+    
+    return {
+     templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
+     scope: {},
+     replace: true,
+     controller: ctrl,
+     controllerAs: 'libctrl',
+     bindToController: true,
+   };
+}]);
 
 /* --- LIBRARY SEARCH --- */
 
 penelopeDirectives.directive('librarySearch', function() {
     return {
         restrict: 'EA',
-        templateUrl: '/static/partials/templates/library_search.html',
+        templateUrl: penelopeDirectives.baseTemplateUrl + 'library_search.html',
     };
 });
