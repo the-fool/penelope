@@ -2,7 +2,7 @@
 
 var penelopeApp = angular.module('penelopeApp', [
     'ngRoute',
-    'anguFixedHeaderTable',
+    'selectionModel',
     'penelopeControllers',
     'penelopeDirectives',
     'penelopeServices',

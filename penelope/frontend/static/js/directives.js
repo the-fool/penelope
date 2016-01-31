@@ -30,33 +30,33 @@ penelopeDirectives.directive('playlistRow', function () {
 
 /* --- PLAYLIST VIEW --- */
 
-penelopeDirectives.directive('playlistView', [function() {
+penelopeDirectives.directive('playlistView', [function () {
     return {
         templateUrl: penelopeDirectives.baseTemplateUrl + 'playlist_view.html'
     }
 }]);
 
-penelopeDirectives.directive('libraryView', ['Library', function(Lib) {
+penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
     function ctrl() {
         this.packages = Lib.query();
-        this.expand = function(pack) {
+        this.expand = function (pack) {
             pack.show = !pack.show;
         }
     }
-    
+
     return {
-     templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
-     scope: {},
-     replace: true,
-     controller: ctrl,
-     controllerAs: 'libctrl',
-     bindToController: true,
-   };
+        templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
+        scope: {},
+        replace: true,
+        controller: ctrl,
+        controllerAs: 'libctrl',
+        bindToController: true,
+    };
 }]);
 
 /* --- LIBRARY SEARCH --- */
 
-penelopeDirectives.directive('librarySearch', function() {
+penelopeDirectives.directive('librarySearch', function () {
     return {
         restrict: 'EA',
         templateUrl: penelopeDirectives.baseTemplateUrl + 'library_search.html',

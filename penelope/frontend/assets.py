@@ -15,7 +15,7 @@ css_all = Bundle('bower_components/bootstrap/dist/css/bootstrap.min.css'
 js_vendor = Bundle('bower_components/jquery/dist/jquery.js',
                    'bower_components/bootstrap/dist/js/bootstrap.js',
                    'bower_components/angular/angular.js',
-                   'bower_components/angu-fixed-header-table/angu-fixed-header-table.js',
+                   'bower_components/selection-model/dist/selection-model.js',
                    'bower_components/angular-route/angular-route.js',
                    'bower_components/angular-resource/angular-resource.js'
                    )
