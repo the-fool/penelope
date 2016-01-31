@@ -5,7 +5,7 @@ from flask.ext.script import Manager, Shell
 
 from penelope.api import create_app
 from penelope.core import db                        
-from penelope.models import Track
+from penelope.models import *
 from penelope.tracks import TrackHandler
 from penelope.database import init_db, db_session
 
@@ -14,7 +14,11 @@ manager = Manager(app)
 migrate = Migrate(app, db)
 
 def make_shell_context():
-    return dict(app=app, Track=Track, sess=db_session, init_db=init_db,
+    return dict(app=app, 
+                Track=Track, 
+                Album=Album, 
+                sess=db_session, 
+                init_db=init_db,
                 get_id3=TrackHandler.get_id3)
 
 

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 
 from ..helpers import JsonSerializer
-from ..database import Base, init_db, db_session as sess 
+from ..database import Base, db_session as sess 
 
 class AlbumJsonSerializer(JsonSerializer):
     pass
@@ -16,4 +16,21 @@ class Album(Base, AlbumJsonSerializer):
     year = Column(Integer)
     
     def __repr__(self):
-        return u'<Album: {0} - {1} - [{2}] ({3})'.format(self.name, self.artist, self.year, self.num_tracks)
+        return u'<Album: {0} - {1} - [{2}] ({3})>'.format(self.artist, self.name, self.year, self.num_tracks)
+    
+    @staticmethod
+    def populate_albums():
+        from sqlalchemy import func
+        from ..tracks import Track
+        for track, count in sess.query(Track, func.count(Track.pk)).group_by(Track.album).all():
+            a = Album(
+                name=track.album,
+                artist=track.artist,
+                year=track.year,
+                num_tracks=count
+            )
+            sess.add(a)
+            sess.commit()
+        
+        
+        
