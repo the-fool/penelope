@@ -1,13 +1,14 @@
 <ul>
     <span ng-repeat="pack in libctrl.packages">
-        <a ng-click="libctrl.expand(pack)">+</a>
+        <a ng-click="libctrl.expand($event, pack)">+</a>
         <li ng-show="([pack] | filter:searchFilter).length > 0">
             {{pack.artist}} - {{pack.name}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
     
-            <ul ng-show="pack.show">
+            <ul  ng-show="pack.show">
                 <li ng-repeat="t in pack.tracks  | orderBy: t.track_num"
                     selection-model
-                    selection-model-mode="'multiple-additive'"
+                    selection-model-mode="'multiple'"
+                    selection-model-cleanup-strategy="'deselect'"
                     >
                     {{t.track_num}}. {{t.title}}
                 </li>

@@ -39,9 +39,18 @@ penelopeDirectives.directive('playlistView', [function () {
 penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
     function ctrl() {
         this.packages = Lib.query();
-        this.expand = function (pack) {
+        
+        this.expand = function ($event, pack) {
             pack.show = !pack.show;
-        }
+            if (!pack.show) {
+               // in order to be "angular", I think I need a "one-way" data-binding
+               // I only want to remove classes at certain events, 
+               // but not add them in the absence of events
+               $($event.currentTarget).parent().find('li').removeClass('selected');
+            }
+        };
+        
+    
     }
 
     return {
