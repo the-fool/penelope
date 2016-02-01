@@ -46,6 +46,10 @@ penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
                // in order to be "angular", I think I need a "one-way" data-binding
                // I only want to remove classes at certain events, 
                // but not add them in the absence of events
+               // However -- if there are 100k songs in a library, 
+               // then I do not want that many $watchers -- 
+               // and maybe this low-level DOM-centric approach is best?fa 
+            
                $($event.currentTarget).parent().find('li').removeClass('selected');
             }
         };
