@@ -48,15 +48,7 @@
     }]);
 
     penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
-        return {
-            templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
-            scope: {},
-            replace: true,
-            controller: 'libraryViewCtrl',
-            controllerAs: 'libctrl',
-            bindToController: true,
-        };
-    }]).controller('libraryViewCtrl', ['Library', function(Lib) {
+        function ctrl() {
             /*jshint validthis: true */
             this.packages = Lib.query();
             this.selectedTracks = [];
@@ -71,12 +63,22 @@
                     // but not add them in the absence of events
                     // However -- if there are 100k songs in a library, 
                     // then I do not want that many $watchers -- 
-                    // and maybe this low-level DOM-centric approach is best?fa 
+                    // and maybe this low-level DOM-centric approach is best? 
 
                     $($event.currentTarget).parent().find('li').removeClass('selected');
                 }
             };
-        }]);
+        }
+        
+        return {
+            templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
+            scope: {},
+            replace: true,
+            controller: ctrl,
+            controllerAs: 'libctrl',
+            bindToController: true,
+        };
+    }]);
 
     /* --- LIBRARY SEARCH --- */
 
