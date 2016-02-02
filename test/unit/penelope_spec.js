@@ -6,11 +6,10 @@ describe('Penelope', function () {
 
     describe('library view directive', function () {
         var scope, $compile, $httpBackend, library;
-        var html = 'penelope/frontend/static/partials/';
-
+    
         beforeEach(module('penelopeDirectives'));
 
-        beforeEach(module(html + 'templates/library_view.html'));
+        beforeEach(module('templates'));
 
         beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile) {
             $httpBackend = _$httpBackend_;

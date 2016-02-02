@@ -7,8 +7,11 @@ module.exports = function (config) {
             'penelope/frontend/static/js/*.js': ['jshint'],
             'penelope/frontend/static/partials/templates/*.html': ['ng-html2js']
         },
-        
-        reporters: ['progress', 'junit'],
+        ngHtml2JsPreprocessor: {
+          stripPrefix: "penelope/frontend",
+          moduleName: "templates",  
+        },
+        reporters: ['progress'],
         files: [
             baseDir + 'bower_components/jquery/dist/jquery.js',
             baseDir + 'bower_components/angular/angular.js',
@@ -20,13 +23,14 @@ module.exports = function (config) {
             baseDir + 'partials/*.html',
             baseDir + 'partials/**/*.html',
             'test/unit/**/*.js'
-	   ],
-
+	       ],
+        
+        
         autoWatch: true,
 
         frameworks: ['jasmine'],
 
-        browsers: ['Chrome', 'Firefox'],
+        browsers: ['Chrome'],
 
         plugins: [
             'karma-jshint-preprocessor',
@@ -35,12 +39,6 @@ module.exports = function (config) {
             'karma-jasmine',
             'karma-ng-html2js-preprocessor',
             ],
-
-        junitReporter: {
-            outputDir: 'reports',
-            outputFile: 'reports/unit.xml',
-            suite: 'unit'
-        },
   
         jshint: {
             options: {
