@@ -24,7 +24,6 @@ module.exports = function (config) {
             'test/unit/**/*.js'
 	       ],
 
-
         autoWatch: true,
 
         frameworks: ['jasmine'],

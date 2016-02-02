@@ -3,17 +3,17 @@
 describe('Penelope', function () {
 
     beforeEach(module('penelopeApp'));
-
+    beforeEach(module('penelopeServices'));
     describe('library view directive', function () {
-        var scope, $compile, $httpBackend, library;
-    
+        var scope, $compile, $httpBackend, library, ctrl;
+
         beforeEach(module('penelopeDirectives'));
 
         beforeEach(module('/static/partials/templates/library_view.html'));
 
-        beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile) {
+        beforeEach(inject(function (_$httpBackend_, _$rootScope_, $controller, $compile, $templateCache) {
             $httpBackend = _$httpBackend_;
-            $httpBackend.expectGET('api/library').
+            $httpBackend.when('GET', 'api/library').
             respond([{
                     "name": "Blackstar",
                     "artist": "David Bowie",
@@ -131,17 +131,27 @@ describe('Penelope', function () {
                     "pk": 2
             }]);
 
-            library = angular.element('<library-view id="library"></library-view>');
+            library = $('<library-view id="library"></library-view>');
             scope = _$rootScope_;
+            $httpBackend.expectGET('api/library');
             $compile(library)(scope);
             scope.$digest();
+            $httpBackend.flush();
         }));
 
-        it('should have an unordered list', inject(function ($compile, $rootScope) {
-            var list = library.find('ul');
+        afterEach(function () {
+            $httpBackend.verifyNoOutstandingExpectation();
+            $httpBackend.verifyNoOutstandingRequest();
+        });
 
+        it('should have an unordered list', function () {
+            var list = library.find('ul');
             expect(list.length).not.toBeLessThan(1);
-          
+        });
+
+        it('should initially have invisible tracklistings', inject(function ($compile, $rootScope) {
+            var listing = library.find('#package-listing');
+            expect(listing).toHaveClass('ng-hide');
         }));
 
     });

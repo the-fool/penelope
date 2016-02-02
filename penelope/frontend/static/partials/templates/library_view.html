@@ -6,7 +6,7 @@
             <li ng-show="([pack] | filter:searchFilter).length > 0">
                 {{pack.artist}} - {{pack.name}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
     
-                <ul  ng-show="pack.show">
+                <ul id="package-listing" ng-show="pack.show">
                     <li ng-repeat="t in pack.tracks|orderBy:'track_num'"
                         selection-model
                         selection-model-mode="'multiple'"

@@ -48,7 +48,15 @@
     }]);
 
     penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
-        function ctrl() {
+        return {
+            templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
+            scope: {},
+            replace: true,
+            controller: 'libraryViewCtrl',
+            controllerAs: 'libctrl',
+            bindToController: true,
+        };
+    }]).controller('libraryViewCtrl', ['Library', function(Lib) {
             /*jshint validthis: true */
             this.packages = Lib.query();
             this.selectedTracks = [];
@@ -68,17 +76,7 @@
                     $($event.currentTarget).parent().find('li').removeClass('selected');
                 }
             };
-        }
-
-        return {
-            templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
-            scope: {},
-            replace: true,
-            controller: ctrl,
-            controllerAs: 'libctrl',
-            bindToController: true,
-        };
-    }]);
+        }]);
 
     /* --- LIBRARY SEARCH --- */
 
