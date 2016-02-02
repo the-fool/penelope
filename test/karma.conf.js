@@ -1,12 +1,26 @@
 module.exports = function (config) {
+    var baseDir = 'penelope/frontend/static/';
     config.set({
-
         basePath: '../',
+              
+        preprocessors: {
+            'penelope/frontend/static/js/*.js': ['jshint'],
+            'penelope/frontend/static/partials/templates/*.html': ['ng-html2js']
+        },
+        
         reporters: ['progress', 'junit'],
         files: [
-	    'penelope/frontend/static/js/**/*.js',
-	    'test/unit/**/*.js'
-	],
+            baseDir + 'bower_components/jquery/dist/jquery.js',
+            baseDir + 'bower_components/angular/angular.js',
+            baseDir + 'bower_components/angular-route/angular-route.js',
+            baseDir + 'bower_components/angular-resource/angular-resource.js',
+            baseDir + 'bower_components/selection-model/dist/selection-model.js',
+            baseDir + 'bower_components/angular-mocks/angular-mocks.js',
+            baseDir + 'js/**/*.js',
+            baseDir + 'partials/*.html',
+            baseDir + 'partials/**/*.html',
+            'test/unit/**/*.js'
+	   ],
 
         autoWatch: true,
 
@@ -15,17 +29,27 @@ module.exports = function (config) {
         browsers: ['Chrome', 'Firefox'],
 
         plugins: [
+            'karma-jshint-preprocessor',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-jasmine',
-            'karma-junit-reporter'
+            'karma-ng-html2js-preprocessor',
             ],
 
         junitReporter: {
-	    outputDir: 'reports'
+            outputDir: 'reports',
             outputFile: 'reports/unit.xml',
             suite: 'unit'
-        }
+        },
+  
+        jshint: {
+            options: {
+                globals: {
+                    $: false,
+                    
+                }
+            }
+        },
 
     });
 };

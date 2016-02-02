@@ -7,7 +7,6 @@ var penelopeApp = angular.module('penelopeApp', [
     'penelopeDirectives',
     'penelopeServices',
     'penelopeFilters'
-    
 ]);
 
 penelopeApp.config(['$routeProvider', function ($rp) {
