@@ -17,3 +17,7 @@ penelopeServices.factory('Library', ['$resource',
         update: {method: 'POST'}
     });
 }]);
+
+penelopeServices.factory('CurrentPlaylist', [function() {
+    return {tracks: []};
+}]);

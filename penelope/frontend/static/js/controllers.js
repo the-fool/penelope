@@ -13,6 +13,3 @@ penelopeControllers.controller('JukeboxCtrl', ['Track',
     }]);
 
 
-penelopeControllers.controller('PlaylistCtrl', [function() {
-    
-}]);

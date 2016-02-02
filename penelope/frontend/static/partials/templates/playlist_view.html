@@ -14,6 +14,6 @@
         </th>
     </thead>
     <tbody>
-        <tr ng-repeat="piste in plistctrl.tracks.data"  playlist-row track="piste" on-click="jukectrl.clickTrack"></tr>
+        <tr ng-repeat="track in playlistCtrl.playlist"  playlist-row track="track" on-click="jukectrl.clickTrack"></tr>
     </tbody>
 </table>

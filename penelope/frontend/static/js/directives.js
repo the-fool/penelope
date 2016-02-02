@@ -30,16 +30,27 @@ penelopeDirectives.directive('playlistRow', function () {
 
 /* --- PLAYLIST VIEW --- */
 
-penelopeDirectives.directive('playlistView', [function () {
+penelopeDirectives.directive('playlistView', ['CurrentPlaylist', function (CurrentPlaylist) {
+    function ctrl() {
+        this.playlist = CurrentPlaylist.tracks;
+    }
+    
     return {
-        templateUrl: penelopeDirectives.baseTemplateUrl + 'playlist_view.html'
+        templateUrl: penelopeDirectives.baseTemplateUrl + 'playlist_view.html',
+        scope: {},
+        controller: ctrl,
+        controllerAs: 'playlistCtrl',
+        bindToController: true
     }
 }]);
 
 penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
     function ctrl() {
         this.packages = Lib.query();
-        
+        this.selectedTracks = [];
+        this.appendToPlaylist = function() {
+          console.log(this.selectedTracks);  
+        };
         this.expand = function ($event, pack) {
             pack.show = !pack.show;
             if (!pack.show) {
@@ -52,9 +63,7 @@ penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
             
                $($event.currentTarget).parent().find('li').removeClass('selected');
             }
-        };
-        
-    
+        };  
     }
 
     return {
