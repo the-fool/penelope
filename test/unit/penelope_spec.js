@@ -9,7 +9,7 @@ describe('Penelope', function () {
     
         beforeEach(module('penelopeDirectives'));
 
-        beforeEach(module('templates'));
+        beforeEach(module('/static/partials/templates/library_view.html'));
 
         beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile) {
             $httpBackend = _$httpBackend_;

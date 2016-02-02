@@ -2,14 +2,13 @@ module.exports = function (config) {
     var baseDir = 'penelope/frontend/static/';
     config.set({
         basePath: '../',
-              
+
         preprocessors: {
             'penelope/frontend/static/js/*.js': ['jshint'],
             'penelope/frontend/static/partials/templates/*.html': ['ng-html2js']
         },
         ngHtml2JsPreprocessor: {
-          stripPrefix: "penelope/frontend",
-          moduleName: "templates",  
+            stripPrefix: "penelope/frontend",
         },
         reporters: ['progress'],
         files: [
@@ -24,8 +23,8 @@ module.exports = function (config) {
             baseDir + 'partials/**/*.html',
             'test/unit/**/*.js'
 	       ],
-        
-        
+
+
         autoWatch: true,
 
         frameworks: ['jasmine'],
@@ -39,15 +38,13 @@ module.exports = function (config) {
             'karma-jasmine',
             'karma-ng-html2js-preprocessor',
             ],
-  
+
         jshint: {
             options: {
-                globals: {
-                    $: false,
-                    
-                }
+                jshintrc: '.jshintrc'
             }
         },
+
 
     });
 };
