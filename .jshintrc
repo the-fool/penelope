@@ -6,6 +6,7 @@
         "$": false,
         "jQuery": false,
         "angular": false,
-        "console": false
+        "console": false,
+        "alert": false
     }
 }

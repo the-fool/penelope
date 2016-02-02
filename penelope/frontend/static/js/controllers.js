@@ -1,15 +1,16 @@
-'use strict';
+(function () {
+    'use strict';
 
-var penelopeControllers = angular.module('penelopeControllers', []);
+    var penelopeControllers = angular.module('penelopeControllers', []);
 
-penelopeControllers.controller('JukeboxCtrl', ['Track', 
-    function(Tracks) {
-        this.tracks = Tracks.query();
-        
-        
-        this.clickTrack = function(track) {
-          alert('clicked ' + track.title);  
-        };
+    penelopeControllers.controller('JukeboxCtrl', ['Track',
+    function (Tracks) {
+            this.tracks = Tracks.query();
+
+
+            this.clickTrack = function (track) {
+                alert('clicked ' + track.title);
+            };
     }]);
 
-
+})();
