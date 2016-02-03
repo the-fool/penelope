@@ -8,7 +8,7 @@
                 ng-show="([pack] | filter:searchFilter).length > 0">
                 {{pack.artist}} - {{pack.name}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
     
-                <ul class="package-listing" ng-show="pack.show">
+                <ul class="package-listing" ng-show="pack.show" ng-click="$event.stopPropagation()">
                     <li class="track"
                         data-pk={{t.pk}}
                         ng-repeat="t in pack.tracks|orderBy:'track_num'"

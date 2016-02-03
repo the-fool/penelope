@@ -64,11 +64,23 @@
                     // However -- if there are 100k songs in a library, 
                     // then I do not want that many $watchers -- 
                     // and maybe this low-level DOM-centric approach is best? 
-                    $($event.currentTarget).parent().find('li').removeClass('selected');
+                    $($event.currentTarget).parent().find('li.track').removeClass('selected');
                 }
             };
+            this.selectPackage = function ($event, pack) {
+                pack.selected = !pack.selected;
+
+                var $el = $($event.currentTarget)
+                var ctrlClk = $.Event('click');
+                ctrlClk.ctrlKey = true;
+                ctrlClk.metaKey = true;
+                $el.find('li.track').each(function (i, e) {
+                    if ($(e).hasClass('selected') == !pack.selected) {
+                        $(e).trigger(ctrlClk);
+                    }
+                });
+            };
         }
-        
         return {
             templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
             scope: {},
@@ -77,7 +89,7 @@
             controllerAs: 'libctrl',
             bindToController: true,
         };
-    }]);
+                }]);
 
     /* --- LIBRARY SEARCH --- */
 
