@@ -223,6 +223,7 @@ describe('Penelope', function () {
             
             it('should select multiple items with ctrl/meta+click', function() {
                 e.ctrlKey = true;
+                e.metaKey = true;
                 for (var i = 0; i < 4; i++) {
                     $(tracks[i]).trigger(e);
                     // allow time to $digest
@@ -236,6 +237,7 @@ describe('Penelope', function () {
             
             it('should deselect multiple items with ctrl/meta+click', function() {
                 e.ctrlKey = true;
+                e.metaKey = true;
                 for (var i = 0; i < 4; i++) {
                     $(tracks[i]).trigger(e);
                 }
@@ -243,19 +245,13 @@ describe('Penelope', function () {
                     $(tracks[i]).trigger(e);
                     // allow time to $digest
                     $timeout(function() {
-                        for (var j = 0; j <= i; j++) {
-                            
+                        for (var j = 0; j <= i; j++) {                   
                             expect($(tracks[j + 1])).toHaveClass('selected');     
                             expect($(tracks[j])).not.toHaveClass('selected');     
                         }
                     }, 60);
                 }
-            });
-            
-            
-
+            });          
         });
     });
-
-
 });

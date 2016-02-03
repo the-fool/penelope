@@ -47,8 +47,8 @@
         };
     }]);
 
-    penelopeDirectives.directive('libraryView', ['Library', '$timeout', function (Lib, $timeout) {
-        function ctrl($scope) {
+    penelopeDirectives.directive('libraryView', ['Library', '$timeout', function (Lib) {
+        function ctrl() {
             /*jshint validthis: true */
             this.packages = Lib.query();
             this.selectedTracks = {};
@@ -57,37 +57,21 @@
             };
 
             this.clickTrack = function ($event, pack, track) {
-                // single-select click
-                if (!$event.ctrlKey && !$event.metaKey) {
-                    var p = this.selectedTracks[pack.pk];
-                    
-                    // on pristine state
-                    if (!p) {
-                        track.selected = true;
-                    }
-                    // on dirty state
-                    else if (p) {
-                        // with a single selection, a click should replace or negate it
-                        if (p.length === 1) {
-                            if (p[0] === track) {
-                                track.selected = false;
-                            } else {
-                                p[0].selected = false;
-                                track.selected = true;
-                            }
+                var p = this.selectedTracks[pack.pk];
+
+                // on pristine state
+                if (!p) {
+                    track.selected = true;
+                }
+                // dirty state
+                else {
+                    if (!$event.ctrlKey && !$event.metaKey) {
+                        for (var i = 0; i < this.selectedTracks[pack.pk].length; i++) {
+                            this.selectedTracks[pack.pk][i].selected = false;
                         }
-                        // with multiple selected tracks, a click becomes The One
-                        else if (p.length > 1) {
-                            for (var i = 0; i < this.selectedTracks[pack.pk].length; i++) {
-                                this.selectedTracks[pack.pk][i].selected = false;
-                            }
-                            track.selected = true;
-                        }
-                        // in either case, we will delete the property and build it from scratch
-                        // in order to avoid a memory leak (unending list of "selected: false")
                         delete this.selectedTracks[pack.pk];
                     }
-                } else if ($event.ctrlKey || $event.metaKey) {
+
                     track.selected = !track.selected;
                 }
 
