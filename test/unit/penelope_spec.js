@@ -5,13 +5,13 @@ describe('Penelope', function () {
     beforeEach(module('penelopeApp'));
     beforeEach(module('penelopeServices'));
     describe('library view directive', function () {
-        var scope, $compile, $httpBackend, library, ctrl;
+        var scope, $compile, $httpBackend, library, libctrl;
 
         beforeEach(module('penelopeDirectives'));
 
         beforeEach(module('/static/partials/templates/library_view.html'));
 
-        beforeEach(inject(function (_$httpBackend_, _$rootScope_, $controller, $compile, $templateCache) {
+        beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile) {
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', 'api/library').
             respond([{
@@ -137,6 +137,7 @@ describe('Penelope', function () {
             $compile(library)(scope);
             scope.$digest();
             $httpBackend.flush();
+            libctrl = library.isolateScope().libctrl;
         }));
 
         afterEach(function () {
@@ -159,7 +160,16 @@ describe('Penelope', function () {
             tracks.each(function(index, el) {
                expect(index == (parseInt($(el).text()) - 1)).toBeTruthy()
            });
+        });
         
+        it('selects a single track on track click', function() {
+            var e = $.Event('click');
+            var tracks = library.find('ul.package-listing').first().find('li.track');
+            var i = Math.floor(Math.random() * (tracks.length + 1));
+            var t = $(tracks[i]);
+            expect(t).not.toHaveClass('selected');
+            ($(tracks[i]).trigger(e));
+            expect(t).toHaveClass('selected');
         });
 
     });

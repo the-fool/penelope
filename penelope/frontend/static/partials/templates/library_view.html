@@ -12,10 +12,8 @@
                     <li class="track"
                         data-pk={{t.pk}}
                         ng-repeat="t in pack.tracks|orderBy:'track_num'"
-                        selection-model
-                        selection-model-mode="'multiple'"
-                        selection-model-cleanup-strategy="'deselect'"
-                        selection-model-selected-items="libctrl.selectedTracks"
+                        ng-class="{selected: t.selected}"
+                        ng-click="libctrl.clickTrack($event, pack, t)"
                         >
                         {{t.track_num}}. {{t.title}}
                     </li>

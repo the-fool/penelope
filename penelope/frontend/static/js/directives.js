@@ -55,30 +55,18 @@
             this.appendToPlaylist = function () {
                 console.log(this.selectedTracks);
             };
+            this.clickTrack = function($event, pack, track) {
+                track.selected = !track.selected;
+            };
+            
             this.expand = function ($event, pack) {
                 pack.show = !pack.show;
                 if (!pack.show) {
-                    // in order to be "angular", I think I need a "one-way" data-binding
-                    // I only want to remove classes at certain events, 
-                    // but not add them in the absence of events
-                    // However -- if there are 100k songs in a library, 
-                    // then I do not want that many $watchers -- 
-                    // and maybe this low-level DOM-centric approach is best? 
                     $($event.currentTarget).parent().find('li.track').removeClass('selected');
                 }
             };
             this.selectPackage = function ($event, pack) {
                 pack.selected = !pack.selected;
-
-                var $el = $($event.currentTarget);
-                var ctrlClk = $.Event('click');
-                ctrlClk.ctrlKey = true;
-                ctrlClk.metaKey = true;
-                    
-                    $timeout(function() {
-                        $el.find('li.track').each(function (i, e) {$(e).trigger(ctrlClk);});
-                    
-                });
             };
         }
         return {
