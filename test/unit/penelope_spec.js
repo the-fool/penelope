@@ -4,7 +4,7 @@ describe('Penelope', function () {
 
     beforeEach(module('penelopeApp'));
     beforeEach(module('penelopeServices'));
-    
+
     describe('library view directive', function () {
         var scope, $compile, $httpBackend, library, libctrl;
 
@@ -155,47 +155,66 @@ describe('Penelope', function () {
             var listing = library.find('li.package-header').find('ul.package-listing').first();
             expect(listing).toHaveClass('ng-hide');
         }));
-        
-        it('should show its track listings ordered by track_num', function() {
-           var tracks = library.find('li.package-header').first().find('li.track');
-            tracks.each(function(index, el) {
-               expect(index == (parseInt($(el).text()) - 1)).toBeTruthy()
-           });
-        });
-        
-        it('selects a single track on track click', function() {
-            var e = $.Event('click');
+
+        it('should show its track listings ordered by track_num', function () {
             var tracks = library.find('li.package-header').first().find('li.track');
-            var i = Math.floor(Math.random() * (tracks.length));
-            var t = $(tracks[i]);
-            
-            expect(t).not.toHaveClass('selected');
-            $(tracks[i]).trigger(e);
-            expect(t).toHaveClass('selected');
-        });
-        
-        it('should store selected tracks in an object', function() {
-            var sel = libctrl.selectedTracks;
-            expect(Object.keys(sel).length).toBe(0);
-            
-            var e = $.Event('click');
-            var track = library.find('li.package-header').first().find('li.track').first();
-            $(track).trigger(e);
-            
-            expect(Object.keys(sel).length).toBe(1);       
-        });
-        
-        it('should organize selected tracks by album package pk', function() {
-            var sel = libctrl.selectedTracks;
-            expect(Object.keys(sel).length).toBe(0);
-            
-            var e = $.Event('click');
-            var packs = library.find('li.package-header');
-            $(packs[0]).find('li.track').first().trigger(e);
-            expect(Object.keys(sel).length).toBe(1);
-            expect(sel[$(packs[0]).data('pk')].length).toBe(1);
+            tracks.each(function (index, el) {
+                expect(index == (parseInt($(el).text()) - 1)).toBeTruthy()
+            });
         });
 
+        describe("clicking library items", function () {
+            var e, sel, packs;
+            
+            beforeEach(function() {
+                e = $.Event('click'),
+                sel = libctrl.selectedTracks,
+                packs = library.find('li.package-header');
+            });
+            
+            it('should have an initially empty selected track object', function() {
+                expect(Object.keys(sel).length).toBe(0);
+            });
+            
+            it('selects a single track on track click', function () {
+               
+                var tracks = $(packs[0]).find('li.track');
+                var i = Math.floor(Math.random() * (tracks.length));
+                var t = $(tracks[i]);
+
+                expect(t).not.toHaveClass('selected');
+                $(tracks[i]).trigger(e);
+                expect(t).toHaveClass('selected');
+            });
+
+            it('should store selected tracks in an object', function () {
+                var track = $(packs[0]).find('li.track').first();
+                $(track).trigger(e);
+
+                expect(Object.keys(sel).length).toBe(1);
+            });
+
+            it('should organize selected tracks by album package pk', function () {
+                $(packs[0]).find('li.track').first().trigger(e);
+                expect(Object.keys(sel).length).toBe(1);
+                expect(sel[$(packs[0]).data('pk')].length).toBe(1);
+            });
+
+            it('should limit selected items to 1 on ordinary clicks', function () {
+                var tracks = library.find('li.package-header').first().find('li.track');
+                for (var i = 0; i < 3; i++) {
+                    $(tracks[i]).trigger(e);
+                    expect(Object.keys(sel).length).toBe(1);
+                    var key = Object.keys(sel)[0];
+                    expect(sel[key].length).toBe(1);
+                }
+            });
+
+            it('should deselect an item if a single one is selected and then clicked', function () {
+
+            });
+
+        });
     });
 
 
