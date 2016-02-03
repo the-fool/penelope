@@ -57,20 +57,20 @@
             };
 
             this.clickTrack = function ($event, pack, track) {
-                var p = this.selectedTracks[pack.pk];
-
-                // on pristine state
-               
+                var keys = Object.keys(this.selectedTracks);
                 // dirty state
-                if (p) {
+                if (keys) {
                     if (!$event.ctrlKey && !$event.metaKey) {
-                        for (var i = 0; i < this.selectedTracks[pack.pk].length; i++) {
-                            this.selectedTracks[pack.pk][i].selected = false;
+                        for (var k in this.selectedTracks) {
+                            for (var i = 0; i < this.selectedTracks[k].length; i++) {
+                                this.selectedTracks[k][i].selected = false;
+                            }
+                            delete this.selectedTracks[k];
                         }
-                        delete this.selectedTracks[pack.pk];
                     }
                 }
-                 track.selected = !track.selected;
+                
+                track.selected = !track.selected;
                 // populate the object
                 if (track.selected) {
                     if (this.selectedTracks[pack.pk]) {
