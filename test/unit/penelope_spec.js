@@ -150,9 +150,17 @@ describe('Penelope', function () {
         });
 
         it('should initially have invisible tracklistings', inject(function ($compile, $rootScope) {
-            var listing = library.find('#package-listing');
+            var listing = library.find('ul.package-listing').first();
             expect(listing).toHaveClass('ng-hide');
         }));
+        
+        it('should show its track listings ordered by track_num', function() {
+           var tracks = library.find('ul.package-listing').first().find('li.track');
+            tracks.each(function(index, el) {
+               expect(index == (parseInt($(el).text()) - 1)).toBeTruthy()
+           });
+        
+        });
 
     });
 

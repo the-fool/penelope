@@ -3,11 +3,15 @@
     <ul>
         <span ng-repeat="pack in libctrl.packages">
             <a ng-click="libctrl.expand($event, pack)">+</a>
-            <li ng-show="([pack] | filter:searchFilter).length > 0">
+            <li ng-click="libctrl.selectPackage($event, pack)"
+                data-pk="pack.pk"
+                ng-show="([pack] | filter:searchFilter).length > 0">
                 {{pack.artist}} - {{pack.name}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
     
-                <ul id="package-listing" ng-show="pack.show">
-                    <li ng-repeat="t in pack.tracks|orderBy:'track_num'"
+                <ul class="package-listing" ng-show="pack.show">
+                    <li class="track"
+                        data-pk={{t.pk}}
+                        ng-repeat="t in pack.tracks|orderBy:'track_num'"
                         selection-model
                         selection-model-mode="'multiple'"
                         selection-model-cleanup-strategy="'deselect'"

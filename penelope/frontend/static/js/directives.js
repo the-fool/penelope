@@ -64,7 +64,6 @@
                     // However -- if there are 100k songs in a library, 
                     // then I do not want that many $watchers -- 
                     // and maybe this low-level DOM-centric approach is best? 
-
                     $($event.currentTarget).parent().find('li').removeClass('selected');
                 }
             };
