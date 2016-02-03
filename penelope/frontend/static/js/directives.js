@@ -60,20 +60,17 @@
                 var p = this.selectedTracks[pack.pk];
 
                 // on pristine state
-                if (!p) {
-                    track.selected = true;
-                }
+               
                 // dirty state
-                else {
+                if (p) {
                     if (!$event.ctrlKey && !$event.metaKey) {
                         for (var i = 0; i < this.selectedTracks[pack.pk].length; i++) {
                             this.selectedTracks[pack.pk][i].selected = false;
                         }
                         delete this.selectedTracks[pack.pk];
                     }
-                    track.selected = !track.selected;
                 }
-
+                 track.selected = !track.selected;
                 // populate the object
                 if (track.selected) {
                     if (this.selectedTracks[pack.pk]) {
