@@ -47,7 +47,7 @@
         };
     }]);
 
-    penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
+    penelopeDirectives.directive('libraryView', ['Library', '$timeout', function (Lib, $timeout) {
         function ctrl() {
             /*jshint validthis: true */
             this.packages = Lib.query();
@@ -70,14 +70,14 @@
             this.selectPackage = function ($event, pack) {
                 pack.selected = !pack.selected;
 
-                var $el = $($event.currentTarget)
+                var $el = $($event.currentTarget);
                 var ctrlClk = $.Event('click');
                 ctrlClk.ctrlKey = true;
                 ctrlClk.metaKey = true;
-                $el.find('li.track').each(function (i, e) {
-                    if ($(e).hasClass('selected') == !pack.selected) {
-                        $(e).trigger(ctrlClk);
-                    }
+                    
+                    $timeout(function() {
+                        $el.find('li.track').each(function (i, e) {$(e).trigger(ctrlClk);});
+                    
                 });
             };
         }
@@ -89,7 +89,7 @@
             controllerAs: 'libctrl',
             bindToController: true,
         };
-                }]);
+    }]);
 
     /* --- LIBRARY SEARCH --- */
 
