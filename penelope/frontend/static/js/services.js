@@ -4,7 +4,7 @@
     var penelopeServices = angular.module('penelopeServices', ['ngResource']);
 
     penelopeServices.factory('Track', ['$resource',
-  function ($r) {
+        function ($r) {
             return $r('api/tracks', {}, {
                 query: {
                     method: 'GET'
@@ -13,10 +13,10 @@
                     method: 'POST'
                 }
             });
-  }]);
+    }]);
 
     penelopeServices.factory('Library', ['$resource',
-  function ($r) {
+        function ($r) {
             return $r('api/library', {}, {
                 query: {
                     method: 'GET',
@@ -26,11 +26,12 @@
                     method: 'POST'
                 }
             });
-  }]);
+    }]);
 
     penelopeServices.factory('CurrentPlaylist', [function () {
-        return {
-            tracks: []
-        };
+        var svc = {};
+        svc.tracks = [];
+        
+        return svc;
     }]);
 })();

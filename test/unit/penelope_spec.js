@@ -4,6 +4,7 @@ describe('Penelope', function () {
 
     beforeEach(module('penelopeApp'));
     beforeEach(module('penelopeServices'));
+    
     describe('library view directive', function () {
         var scope, $compile, $httpBackend, library, libctrl;
 
@@ -151,12 +152,12 @@ describe('Penelope', function () {
         });
 
         it('should initially have invisible tracklistings', inject(function ($compile, $rootScope) {
-            var listing = library.find('ul.package-listing').first();
+            var listing = library.find('li.package-header').find('ul.package-listing').first();
             expect(listing).toHaveClass('ng-hide');
         }));
         
         it('should show its track listings ordered by track_num', function() {
-           var tracks = library.find('ul.package-listing').first().find('li.track');
+           var tracks = library.find('li.package-header').first().find('li.track');
             tracks.each(function(index, el) {
                expect(index == (parseInt($(el).text()) - 1)).toBeTruthy()
            });
@@ -164,12 +165,35 @@ describe('Penelope', function () {
         
         it('selects a single track on track click', function() {
             var e = $.Event('click');
-            var tracks = library.find('ul.package-listing').first().find('li.track');
-            var i = Math.floor(Math.random() * (tracks.length + 1));
+            var tracks = library.find('li.package-header').first().find('li.track');
+            var i = Math.floor(Math.random() * (tracks.length));
             var t = $(tracks[i]);
+            
             expect(t).not.toHaveClass('selected');
-            ($(tracks[i]).trigger(e));
+            $(tracks[i]).trigger(e);
             expect(t).toHaveClass('selected');
+        });
+        
+        it('should store selected tracks in an object', function() {
+            var sel = libctrl.selectedTracks;
+            expect(Object.keys(sel).length).toBe(0);
+            
+            var e = $.Event('click');
+            var track = library.find('li.package-header').first().find('li.track').first();
+            $(track).trigger(e);
+            
+            expect(Object.keys(sel).length).toBe(1);       
+        });
+        
+        it('should organize selected tracks by album package pk', function() {
+            var sel = libctrl.selectedTracks;
+            expect(Object.keys(sel).length).toBe(0);
+            
+            var e = $.Event('click');
+            var packs = library.find('li.package-header');
+            $(packs[0]).find('li.track').first().trigger(e);
+            expect(Object.keys(sel).length).toBe(1);
+            expect(sel[$(packs[0]).data('pk')].length).toBe(1);
         });
 
     });
