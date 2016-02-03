@@ -6,13 +6,14 @@ describe('Penelope', function () {
     beforeEach(module('penelopeServices'));
 
     describe('library view directive', function () {
-        var scope, $compile, $httpBackend, library, libctrl;
+        var scope, $compile, $httpBackend, library, libctrl, $timeout;
 
         beforeEach(module('penelopeDirectives'));
 
         beforeEach(module('/static/partials/templates/library_view.html'));
 
-        beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile) {
+        beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile, _$timeout_) {
+            $timeout = _$timeout_;
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', 'api/library').
             respond([{
@@ -164,12 +165,13 @@ describe('Penelope', function () {
         });
 
         describe("clicking library items", function () {
-            var e, sel, packs;
+            var e, sel, packs, tracks;
             
             beforeEach(function() {
-                e = $.Event('click'),
-                sel = libctrl.selectedTracks,
+                e = $.Event('click');
+                sel = libctrl.selectedTracks;
                 packs = library.find('li.package-header');
+                tracks = $(packs[0]).find('li.track');
             });
             
             it('should have an initially empty selected track object', function() {
@@ -177,8 +179,6 @@ describe('Penelope', function () {
             });
             
             it('selects a single track on track click', function () {
-               
-                var tracks = $(packs[0]).find('li.track');
                 var i = Math.floor(Math.random() * (tracks.length));
                 var t = $(tracks[i]);
 
@@ -201,7 +201,6 @@ describe('Penelope', function () {
             });
 
             it('should limit selected items to 1 on ordinary clicks', function () {
-                var tracks = library.find('li.package-header').first().find('li.track');
                 for (var i = 0; i < 3; i++) {
                     $(tracks[i]).trigger(e);
                     expect(Object.keys(sel).length).toBe(1);
@@ -211,7 +210,15 @@ describe('Penelope', function () {
             });
 
             it('should deselect an item if a single one is selected and then clicked', function () {
-
+                for (var i = 0; i < 4; i++) {
+                    $(tracks[i]).trigger(e);
+                    $(tracks[i+1]).trigger(e);
+                    // allow time to $digest
+                    $timeout(function() {
+                        expect($(tracks[i])).not.toHaveClass('selected');
+                        expect($(tracks[i + 1])).toHaveClass('selected');    
+                    }, 60);
+                }
             });
 
         });
