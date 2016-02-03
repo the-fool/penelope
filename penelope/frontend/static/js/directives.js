@@ -71,7 +71,6 @@
                         }
                         delete this.selectedTracks[pack.pk];
                     }
-
                     track.selected = !track.selected;
                 }
 

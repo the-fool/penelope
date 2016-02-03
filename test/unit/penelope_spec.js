@@ -209,7 +209,7 @@ describe('Penelope', function () {
                 }
             });
 
-            it('should deselect an item if a single one is selected and then clicked', function () {
+            it('should deselect all when a single item is clicked', function () {
                 for (var i = 0; i < 4; i++) {
                     $(tracks[i]).trigger(e);
                     $(tracks[i+1]).trigger(e);
