@@ -141,7 +141,6 @@ describe('Penelope app', function () {
             $compile(library)(scope);
             scope.$digest();
             $httpBackend.flush();
-            //$timeout.flush();
             libctrl = library.isolateScope().libctrl;
         }));
 
@@ -169,10 +168,9 @@ describe('Penelope app', function () {
         });
 
         describe("with resp. to its click interface", function () {
-            var e, sel, packs, tracks;
+            var sel, packs, tracks;
 
             beforeEach(function () {
-                e = $.Event('click');
                 sel = libctrl.selectedTracks;
                 packs = library.find('li.package-header');
                 tracks = $(packs[0]).find('li.track');
@@ -187,25 +185,25 @@ describe('Penelope app', function () {
                 var t = $(tracks[i]);
 
                 expect(t).not.toHaveClass('selected');
-                t.trigger(e);
+                t.trigger('click');
                 expect(t).toHaveClass('selected');
             });
 
             it('should store selected tracks in an object', function () {
                 var track = $(packs[0]).find('li.track').first();
-                $(track).trigger(e);
+                $(track).trigger('click');
                 expect(Object.keys(sel).length).toBe(1);
             });
 
             it('should organize selected tracks by album package pk', function () {
-                $(packs[0]).find('li.track').first().trigger(e);
+                $(packs[0]).find('li.track').first().trigger('click');
                 expect(Object.keys(sel).length).toBe(1);
                 expect(sel[$(packs[0]).data('pk')].length).toBe(1);
             });
 
             it('should limit selected items to 1 on ordinary clicks', function () {
                 for (var i = 0; i < 3; i++) {
-                    $(tracks[i]).trigger(e);
+                    $(tracks[i]).trigger('click');
                     expect(Object.keys(sel).length).toBe(1);
                     var key = Object.keys(sel)[0];
                     expect(sel[key].length).toBe(1);
@@ -245,7 +243,7 @@ describe('Penelope app', function () {
                 }
 
                 for (var i = 0; i < 3; i++) {
-                    var e = new $.Event('click', {
+                    var e = $.Event('click', {
                         ctrlKey: true
                     });
                     $(tracks[i]).trigger(e);
@@ -255,116 +253,106 @@ describe('Penelope app', function () {
                     }
                 }
             });
-            /*
-            it('supports selection clicks in multiple packages', function (done) {
-                e.ctrlKey = true;
-                e.metaKey = true;
 
-               
-                scope.$apply(function() {
-                     $(packs[0]).find('li.track').first().trigger(e);
-                    $(packs[1]).find('li.track').first().trigger(e);     
-                });
-                setTimeout(function () {
-                    expect(Object.keys(sel).length).toBe(2);
-                    done();
-                }, 200);
+            it('supports selection clicks in multiple packages', function () {
+
+                $(packs[0]).find('li.track').first().trigger($.Event('click', {
+                    ctrlKey: true
+                }));
+                $(packs[1]).find('li.track').first().trigger($.Event('click', {
+                    ctrlKey: true
+                }));
+
+                expect(Object.keys(sel).length).toBe(2);
+
             });
 
             it('clears all packages and add a single item with a normal click', function () {
-                e.ctrlKey = true;
-                e.metaKey = true;
-
                 var tracks1 = $(packs[0]).find('li.track'),
                     tracks2 = $(packs[1]).find('li.track');
                 for (var i = 0; i < 3; i++) {
-                    $(tracks1[i]).trigger(e);
-                    $(tracks2[i]).trigger(e);
+                    $(tracks1[i]).trigger($.Event('click', {
+                        ctrlKey: true
+                    }));
+                    $(tracks2[i]).trigger($.Event('click', {
+                        ctrlKey: true
+                    }));
                 }
-                $timeout(function () {
-                    for (var k in sel) {
-                        expect(sel[k].length).toBe(3);
-                    }
-                });
-                e.ctrlKey = false;
-                e.metaKey = false;
-                $(tracks1[3]).trigger(e);
-                $timeout(function () {
-                    expect(Object.keys(sel).length).toBe(1);
-                });
+
+                for (var k in sel) {
+                    expect(sel[k].length).toBe(3);
+                }
+
+                $(tracks1[3]).trigger($.Event('click'));
+
+                expect(Object.keys(sel).length).toBe(1);
+
             });
 
             it('should expand and minimize a listing when the anchor is clicked', function () {
                 var listing = $(library.find('ul.package-listing')).first();
                 expect(listing).toHaveClass('ng-hide');
-                library.find('a.expand-listing').first().click();
-                $timeout(function () {
-                    expect(listing).not.toHaveClass('ng-hide');
-                });
-                library.find('a.expand-listing').first().click();
-                $timeout(function () {
-                    expect(listing).toHaveClass('ng-hide');
-                });
+                library.find('a.expand-listing').first().trigger('click');
+                expect(listing).not.toHaveClass('ng-hide');
+                library.find('a.expand-listing').first().trigger('click');
+                expect(listing).toHaveClass('ng-hide');
             });
 
+
             it('should clear a packgaes selection when a pack is minimized', function () {
-                e.ctrlKey = true;
-                e.metaKey = true;
                 var anchor = library.find('a.expand-listing').first();
                 anchor.click();
 
                 for (var i = 0; i < 3; i++) {
-                    $(tracks[i]).trigger(e);
+                    $(tracks[i]).trigger($.Event('click', {
+                        ctrlKey: true
+                    }));
                 }
                 anchor.click();
-                $timeout(function () {
-                    expect(Object.keys(sel).length).toBe(0);
-                });
+
+                expect(Object.keys(sel).length).toBe(0);
+
             });
 
             it('should remove ".selected" class when a package is cleared', function () {
-                e.ctrlKey = true;
-                e.metaKey = true;
                 var anchor = library.find('a.expand-listing').first();
                 anchor.click();
 
                 for (var i = 0; i < 4; i++) {
-                    $(tracks[i]).trigger(e);
+                    $(tracks[i]).trigger($.Event('click', {
+                        ctrlKey: true
+                    }));
                 }
 
                 anchor.click();
 
-                $timeout(function () {
-                    for (var i = 0; i < 4; i++) {
-                        expect($(tracks[i])).not.toHaveClass('selected');
-                    }
-                });
+                for (var i = 0; i < 4; i++) {
+                    expect($(tracks[i])).not.toHaveClass('selected');
+                }
+
             });
 
-            it('should clear the selected items of the minimized pack, and leave the others alone', function (done) {
+            it('should clear the selected items of the minimized pack, and leave the others alone', function () {
                 var anchors = library.find('a.expand-listing');
                 $(anchors[0]).click();
                 $(anchors[1]).click();
 
-                e.ctrlKey = true;
-                e.metaKey = true;
-                
                 var tracks1 = $(packs[0]).find('li.track'),
                     tracks2 = $(packs[1]).find('li.track');
                 for (var i = 0; i < 3; i++) {
-                    $(tracks1[i]).trigger(e);
-                     $(tracks2[i]).trigger(e);
+                    $(tracks1[i]).trigger($.Event('click', {
+                        ctrlKey: true
+                    }));
+                    $(tracks2[i]).trigger($.Event('click', {
+                        ctrlKey: true
+                    }));
                 }
                 $(anchors[1]).click();
-                
 
-                setTimeout(function () {
-                    var keys = Object.keys(sel);
-                    console.log(keys);
-                    expect(keys.length).toBe(1);
-                    expect(sel[keys[0]].length).toBe(3);
-                    done();
-                }, 500);
+                var keys = Object.keys(sel);
+                console.log(keys);
+                expect(keys.length).toBe(1);
+                expect(sel[keys[0]].length).toBe(3);
 
             });
 
@@ -375,33 +363,23 @@ describe('Penelope app', function () {
                     CurrentPlaylist = _CurrentPlaylist_;
                 }));
 
-                it("should append nothing to the playlist when nothing is selected", function (done) {
+                it("should append nothing to the playlist when nothing is selected", function () {
                     expect(CurrentPlaylist.tracks.length).toBe(0);
                     library.find('#append-to-playlist').click();
-                    setTimeout(function () {
-                        expect(CurrentPlaylist.tracks.length).toBe(0);
-                        done();
-                    }, 100);
+
+                    expect(CurrentPlaylist.tracks.length).toBe(0);;
                 });
 
-                it("should append something to the playlist when something is selected", function (done) {
-                    e.ctrlKey = true;
-                    e.metaKey = true;
-
+                it("should append something to the playlist when something is selected", function () {
                     for (var i = 0; i < 4; i++) {
-                        $(tracks[i]).trigger(e);
+                        $(tracks[i]).trigger($.Event('click', {
+                            ctrlKey: true
+                        }));
                     }
                     library.find('#append-to-playlist').click();
-
-                    $timeout(function () {
-                        console.log(CurrentPlaylist.tracks);
-                        expect(CurrentPlaylist.tracks.length).toBe(4);
-                        done();
-                    }, 100);
-
+                    expect(CurrentPlaylist.tracks.length).toBe(4);
                 });
-
-            });*/
+            });
         });
     });
 });
