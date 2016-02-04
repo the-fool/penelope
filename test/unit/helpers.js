@@ -1,5 +1,5 @@
-beforeEach(function() {
-  this.addMatchers({
+/*beforeEach(function() {
+  jasmine.addMatchers({
     toHaveClass: function(cls) {
       this.message = function() {
         return "Expected '" + angular.mock.dump(this.actual) + "' to have class '" + cls + "'.";
@@ -9,3 +9,4 @@ beforeEach(function() {
     }
   });
 });
+*/

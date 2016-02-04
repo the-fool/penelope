@@ -13,6 +13,7 @@ module.exports = function (config) {
         reporters: ['progress'],
         files: [
             baseDir + 'bower_components/jquery/dist/jquery.js',
+            'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
             baseDir + 'bower_components/angular/angular.js',
             baseDir + 'bower_components/angular-route/angular-route.js',
             baseDir + 'bower_components/angular-resource/angular-resource.js',

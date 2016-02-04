@@ -141,7 +141,7 @@ describe('Penelope app', function () {
             $compile(library)(scope);
             scope.$digest();
             $httpBackend.flush();
-            $timeout.flush();
+            //$timeout.flush();
             libctrl = library.isolateScope().libctrl;
         }));
 
@@ -156,7 +156,7 @@ describe('Penelope app', function () {
 
         });
 
-        it('should initially have invisible tracklistings', function ($compile, $rootScope) {
+        it('should initially have invisible tracklistings', function () {
             var listing = library.find('li.package-header').find('ul.package-listing').first();
             expect(listing).toHaveClass('ng-hide');
         });
@@ -339,7 +339,7 @@ describe('Penelope app', function () {
                 });
             });
 
-            it('should clear the selected items of the minimized pack, and leave the others alone', function () {
+            it('should clear the selected items of the minimized pack, and leave the others alone', function (done) {
                 var anchors = library.find('a.expand-listing');
                 $(anchors[0]).click();
                 $(anchors[1]).click();
@@ -351,11 +351,15 @@ describe('Penelope app', function () {
                     $(tracks2[i]).trigger(e);
                 }
                 $(anchors[0]).click();
-                $timeout(function () {
+               
+                setTimeout(function() {
                     var keys = Object.keys(sel);
+                    console.log(keys);
                     expect(keys.length).toBe(1);
                     expect(sel[keys[0]].length).toBe(3);
-                });
+                    done();
+                }, 200);
+                
             });
 
             describe("and its connection to the Playlist Service", function () {
@@ -365,15 +369,16 @@ describe('Penelope app', function () {
                     CurrentPlaylist = _CurrentPlaylist_;
                 }));
 
-                it("should append nothing to the playlist when nothing is selected", function () {
+                it("should append nothing to the playlist when nothing is selected", function (done) {
                     expect(CurrentPlaylist.tracks.length).toBe(0);
                     library.find('#append-to-playlist').click();
-                    $timeout(function () {
+                    setTimeout(function () {
                         expect(CurrentPlaylist.tracks.length).toBe(0);
-                    });
+                        done();
+                    }, 100);
                 });
 
-                it("should append something to the playlist when something is selected", function () {
+                it("should append something to the playlist when something is selected", function (done) {
                     e.ctrlKey = true;
                     e.metaKey = true;
 
@@ -381,9 +386,13 @@ describe('Penelope app', function () {
                         $(tracks[i]).trigger(e);
                     }
                     library.find('#append-to-playlist').click();
-                    $timeout(function () {
-                        expect(CurrentPlaylist.tracks.length).toBe(0);
-                    });
+
+                    $timeout(function() {
+                        console.log(CurrentPlaylist.tracks);
+                        expect(CurrentPlaylist.tracks.length).toBe(4);
+                        done();
+                    },100);
+                    
                 });
 
             });

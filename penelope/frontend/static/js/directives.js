@@ -66,7 +66,7 @@
             this.selectedTracks = {};
 
             this.appendToPlaylist = function () {
-                console.log(this.selectedTracks);
+                //console.log(this.selectedTracks);
                 for (var k in this.selectedTracks) {
                     CurrentPlaylist.add(this.selectedTracks[k]);
                 }
