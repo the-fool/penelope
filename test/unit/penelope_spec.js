@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Penelope app', function () {
-
+    var tplDir = '/static/partials/';
     beforeEach(module('penelopeApp'));
     beforeEach(module('penelopeServices'));
     beforeEach(module('penelopeDirectives'));
@@ -9,9 +9,7 @@ describe('Penelope app', function () {
     describe('library view directive', function () {
         var scope, $compile, $httpBackend, library, libctrl, $timeout;
 
-
-
-        beforeEach(module('/static/partials/templates/library_view.html'));
+        beforeEach(module(tplDir + 'library_view.html'));
 
         beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile, _$timeout_) {
             $timeout = _$timeout_;
@@ -381,5 +379,59 @@ describe('Penelope app', function () {
                 });
             });
         });
+    });
+
+    describe('playlist view directive', function () {
+        var scope, $compile, playlist, playlistCtrl;
+        var CurrentPlaylist;
+        var data = [
+            {
+                title: 'Blackstar',
+                track_num: 1,
+                length: 597,
+                pk: 14,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }, {
+                title: 'Tis A Pity She Was A Whore',
+                track_num: 2,
+                length: 292,
+                pk: 18,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }, {
+                title: 'Lazarus',
+                track_num: 3,
+                length: 382,
+                pk: 17,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }, {
+                title: 'Sue (Or In A Season Of Crime)',
+                track_num: 4,
+                length: 280,
+                pk: 20,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }
+        ]
+        beforeEach(inject(function (_CurrentPlaylist_) {
+            CurrentPlaylist = _CurrentPlaylist_;
+        }));
+        beforeEach(module(tplDir + 'playlist_view.html'));
+        
+        beforeEach(inject(function (_$rootScope_, $compile) {
+            playlist = $('<playlist-view id="playlist"></playlist-view>');
+            scope = _$rootScope_.$new();
+            $compile(playlist)(scope);
+            scope.$digest();
+            playlistCtrl = playlist.isolateScope().playlistCtrl;
+        }));
+        
+
     });
 });

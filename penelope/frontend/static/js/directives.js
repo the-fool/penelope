@@ -2,8 +2,22 @@
     'use strict';
 
     var penelopeDirectives = angular.module('penelopeDirectives', []);
-    penelopeDirectives.baseTemplateUrl = '/static/partials/templates/';
+    penelopeDirectives.baseTemplateUrl = '/static/partials/';
 
+    penelopeDirectives.directive('jukebox', function() {
+       function ctrl() {
+           
+       }
+       return {
+           restrict: 'E',
+           templateUrl: penelopeDirectives.baseTemplateUrl + 'jukebox.html',
+           scope: {},
+           controller: ctrl,
+           controllerAs: 'jukeboxCtrl',
+           bindToController: true
+       };
+    });
+    
     /* --- PLAYLIST ROW --- */
 
     penelopeDirectives.directive('playlistRow', function () {
@@ -115,7 +129,6 @@
         return {
             templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
             scope: {},
-            replace: true,
             controller: ctrl,
             controllerAs: 'libctrl',
             bindToController: true,

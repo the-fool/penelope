@@ -5,7 +5,7 @@ module.exports = function (config) {
 
         preprocessors: {
             'penelope/frontend/static/js/*.js': ['jshint'],
-            'penelope/frontend/static/partials/templates/*.html': ['ng-html2js']
+            'penelope/frontend/static/partials/*.html': ['ng-html2js']
         },
         ngHtml2JsPreprocessor: {
             stripPrefix: "penelope/frontend",

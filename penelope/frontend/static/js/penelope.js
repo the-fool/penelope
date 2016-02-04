@@ -14,8 +14,6 @@
         $rp.
         when('/jukebox', {
             templateUrl: 'static/partials/jukebox.html',
-            controller: 'JukeboxCtrl',
-            controllerAs: 'jb'
         }).
         otherwise({
             redirectTo: '/jukebox'
