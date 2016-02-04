@@ -35,7 +35,7 @@
         svc.activeTrack = {};
         svc.setActive = function(track, pos) {
             svc.position = pos;
-            angular.extend(svc.activeTrack, track, {state: 'playing'});
+            angular.extend(svc.activeTrack, track, {state: 'playing', time: 0});
         };
         svc.add = function (tracks) {
             if (tracks.constructor !== Array) {
