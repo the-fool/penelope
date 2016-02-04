@@ -419,10 +419,12 @@ describe('Penelope app', function () {
                 year: 2016
             }
         ]
+        beforeEach(module(tplDir + 'playlist_view.html'));
+        beforeEach(module(tplDir + 'playlist_row.html'));
         beforeEach(inject(function (_CurrentPlaylist_) {
             CurrentPlaylist = _CurrentPlaylist_;
         }));
-        beforeEach(module(tplDir + 'playlist_view.html'));
+
         
         beforeEach(inject(function (_$rootScope_, $compile) {
             playlist = $('<playlist-view id="playlist"></playlist-view>');
@@ -431,6 +433,10 @@ describe('Penelope app', function () {
             scope.$digest();
             playlistCtrl = playlist.isolateScope().playlistCtrl;
         }));
+        
+        it('should be empty initially', function() {
+           expect(playlistCtrl.playlist.length).toBe(0); 
+        });
         
 
     });
