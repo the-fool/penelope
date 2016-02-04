@@ -12,6 +12,14 @@
 li.selected {
     background-color: blue;
 }
+#playlist tr.active {
+    color: aqua;
+    font-size: 3em;
+}
+#playlist tr.selected{
+    color:green;
+    font-size: 2em;
+}
 
 .fixed_headers {
   width: 100%;

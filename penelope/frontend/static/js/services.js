@@ -28,9 +28,16 @@
             });
     }]);
 
-    penelopeServices.factory('CurrentPlaylist', [function () {
+    penelopeServices.factory('PlaylistQueue', [function () {
         var svc = {};
         svc.tracks = [];
+        svc.activeTrack = {};
+        svc.setActive = function(track) {
+            console.log(track);
+            svc.activeTrack.active = false;
+            track.active = true;
+            svc.activeTrack = track;  
+        };
         svc.add = function (tracks) {
             if (tracks.constructor !== Array) {
                 tracks = [tracks];

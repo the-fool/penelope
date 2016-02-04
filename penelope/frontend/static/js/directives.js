@@ -18,6 +18,20 @@
        };
     });
     
+    penelopeDirectives.directive('transport', function() {
+        function ctrl() {
+            /*jshint validthis: true */
+            this.track = {};       
+        }
+        return {
+           restrict: 'E',
+           templateUrl: penelopeDirectives.baseTemplateUrl + 'transport.html',
+           scope: {},
+           controller: ctrl,
+           controllerAs: 'transportCtrl',
+           bindToController: true
+       };
+    });
     /* --- PLAYLIST ROW --- */
 
     penelopeDirectives.directive('playlistRow', function () {
@@ -30,10 +44,6 @@
             },
             link: function ($scope, element, attrs) {
                 /*jshint unused: false */
-                element.bind('click', function () {
-                    element.css('background-color', 'blue');
-                    $scope.onClick()($scope.track);
-                });
                 element.bind('mouseenter', function () {
                     element.css('background-color', 'yellow');
                 });
@@ -46,10 +56,18 @@
 
     /* --- PLAYLIST VIEW --- */
 
-    penelopeDirectives.directive('playlistView', ['CurrentPlaylist', function (CurrentPlaylist) {
+    penelopeDirectives.directive('playlistView', ['PlaylistQueue', function (PlaylistQueue) {
         function ctrl() {
             /*jshint validthis: true */
-            this.playlist = CurrentPlaylist.tracks;
+            this.playlist = PlaylistQueue.tracks;
+            this.selected = {}
+            this.select = function(track) {
+                this.selected = track;     
+            };
+            this.activate = function(track) {
+                console.log('activated track');
+                //PlaylistQueue.setActive(track);
+            };
         }
 
         return {
@@ -61,7 +79,7 @@
         };
     }]);
 
-    penelopeDirectives.directive('libraryView', ['Library', 'CurrentPlaylist', function (Lib, CurrentPlaylist) {
+    penelopeDirectives.directive('libraryView', ['Library', 'PlaylistQueue', function (Lib, PlaylistQueue) {
         function ctrl() {
             /*jshint validthis: true */
             var self = this;
@@ -82,7 +100,8 @@
             this.appendToPlaylist = function () {
                 //console.log(this.selectedTracks);
                 for (var k in this.selectedTracks) {
-                    CurrentPlaylist.add(this.selectedTracks[k]);
+                    PlaylistQueue.add(this.selectedTracks[k]);
+                    clearPackage(k);
                 }
             };
 

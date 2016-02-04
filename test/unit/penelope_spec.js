@@ -348,24 +348,23 @@ describe('Penelope app', function () {
                 $(anchors[1]).click();
 
                 var keys = Object.keys(sel);
-                console.log(keys);
                 expect(keys.length).toBe(1);
                 expect(sel[keys[0]].length).toBe(3);
 
             });
 
             describe("and its connection to the Playlist Service", function () {
-                var CurrentPlaylist;
+                var PlaylistQueue;
 
-                beforeEach(inject(function (_CurrentPlaylist_) {
-                    CurrentPlaylist = _CurrentPlaylist_;
+                beforeEach(inject(function (_PlaylistQueue_) {
+                    PlaylistQueue = _PlaylistQueue_;
                 }));
 
                 it("should append nothing to the playlist when nothing is selected", function () {
-                    expect(CurrentPlaylist.tracks.length).toBe(0);
+                    expect(PlaylistQueue.tracks.length).toBe(0);
                     library.find('#append-to-playlist').click();
 
-                    expect(CurrentPlaylist.tracks.length).toBe(0);;
+                    expect(PlaylistQueue.tracks.length).toBe(0);;
                 });
 
                 it("should append something to the playlist when something is selected", function () {
@@ -375,7 +374,17 @@ describe('Penelope app', function () {
                         }));
                     }
                     library.find('#append-to-playlist').click();
-                    expect(CurrentPlaylist.tracks.length).toBe(4);
+                    expect(PlaylistQueue.tracks.length).toBe(4);
+                });
+                
+                it("should clear all selections after appending to playlist", function() {
+                     for (var i = 0; i < 4; i++) {
+                        $(tracks[i]).trigger($.Event('click', {
+                            ctrlKey: true
+                        }));
+                    }
+                    library.find('#append-to-playlist').click();
+                    expect(Object.keys(sel).length).toBe(0);
                 });
             });
         });
@@ -383,7 +392,7 @@ describe('Penelope app', function () {
 
     describe('playlist view directive', function () {
         var scope, $compile, playlist, playlistCtrl;
-        var CurrentPlaylist;
+        var PlaylistQueue;
         var data = [
             {
                 title: 'Blackstar',
@@ -421,11 +430,10 @@ describe('Penelope app', function () {
         ]
         beforeEach(module(tplDir + 'playlist_view.html'));
         beforeEach(module(tplDir + 'playlist_row.html'));
-        beforeEach(inject(function (_CurrentPlaylist_) {
-            CurrentPlaylist = _CurrentPlaylist_;
+        beforeEach(inject(function (_PlaylistQueue_) {
+            PlaylistQueue = _PlaylistQueue_;
         }));
-
-        
+ 
         beforeEach(inject(function (_$rootScope_, $compile) {
             playlist = $('<playlist-view id="playlist"></playlist-view>');
             scope = _$rootScope_.$new();
@@ -438,6 +446,16 @@ describe('Penelope app', function () {
            expect(playlistCtrl.playlist.length).toBe(0); 
         });
         
-
+        it('should render the PlaylistQueue serveice',function() {
+            PlaylistQueue.add(data);
+            scope.$digest();
+            var tracks = playlist.find('tr.track-row');
+            expect(tracks.length).toBe(data.length);
+            expect($(tracks[0]).find('td.title').text()).toBe('Blackstar');
+        });
+        
+        describe("with resp. to its interface with transport", function() {
+            
+        });
     });
 });
