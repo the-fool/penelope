@@ -51,9 +51,11 @@
         function ctrl() {
             /*jshint validthis: true */
             var self = this;
-            
+
             var clearPackage = function (key) {
-                if (!self.selectedTracks[key]) { return; }
+                if (!self.selectedTracks[key]) {
+                    return;
+                }
                 for (var i = 0; i < self.selectedTracks[key].length; i++) {
                     self.selectedTracks[key][i].selected = false;
                 }
@@ -62,7 +64,7 @@
 
             this.packages = Lib.query();
             this.selectedTracks = {};
-            
+
             this.appendToPlaylist = function () {
                 console.log(this.selectedTracks);
                 for (var k in this.selectedTracks) {
@@ -84,6 +86,11 @@
                 track.selected = !track.selected;
                 // populate the object
                 if (track.selected) {
+                    // serialize
+                    var attrs = ['album', 'artist', 'year'];
+                    for (var i in attrs) {
+                        track[attrs[i]] = pack[attrs[i]];
+                    }
                     if (this.selectedTracks[pack.pk]) {
                         this.selectedTracks[pack.pk].push(track);
                     } else {

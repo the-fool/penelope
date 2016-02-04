@@ -36,12 +36,14 @@
                 tracks = [tracks];
             }
             for (var i = 0; i < tracks.length; i++) {
-                svc.tracks.push({
-                    id: tracks.pk,
-                    title: tracks.title,
-                    album: tracks.album,
-                    artist: tracks.artist
-                });
+                var newTrack = {},
+                    source = tracks[i];
+                for (var attr in source) {
+                    if (attr !== "$$hashKey" && attr !== "selected") {
+                        newTrack[attr] = source[attr];
+                    }
+                }
+                svc.tracks.push(newTrack);
             }
         };
 

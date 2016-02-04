@@ -8,7 +8,7 @@
                 ng-click="libctrl.selectPackage(pack)"
                 data-pk="{{pack.pk}}"
                 ng-show="([pack] | filter:searchFilter).length > 0">
-                {{pack.artist}} - {{pack.name}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
+                {{pack.artist}} - {{pack.album}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
     
                 <ul class="package-listing"
                     ng-show="pack.show" 

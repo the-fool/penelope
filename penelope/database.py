@@ -32,7 +32,7 @@ def init_library(to_add=None):
     rv = []
     for a in albums.all():
         entry = a.to_json()
-        entry['tracks'] = [t.to_json(hidden=['album', 'artist', 'year']) for t in tracks.find(album=a.name).all()]
+        entry['tracks'] = [t.to_json(hidden=['album', 'artist', 'year']) for t in tracks.find(album=a.album).all()]
         rv.append(entry)
     
     import codecs

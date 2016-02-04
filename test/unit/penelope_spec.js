@@ -5,6 +5,7 @@ describe('Penelope app', function () {
     beforeEach(module('penelopeApp'));
     beforeEach(module('penelopeServices'));
     beforeEach(module('penelopeDirectives'));
+
     describe('library view directive', function () {
         var scope, $compile, $httpBackend, library, libctrl, $timeout;
 
@@ -16,8 +17,9 @@ describe('Penelope app', function () {
             $timeout = _$timeout_;
             $httpBackend = _$httpBackend_;
             $httpBackend.when('GET', 'api/library').
-            respond([{
-                    "name": "Blackstar",
+            respond([
+                {
+                    "album": "Blackstar",
                     "artist": "David Bowie",
                     "num_tracks": 7,
                     "tracks": [{
@@ -25,42 +27,42 @@ describe('Penelope app', function () {
                         "track_num": 1,
                         "length": 597,
                         "pk": 14
-                }, {
+                    }, {
                         "title": "Dollar Days",
                         "track_num": 6,
                         "length": 284,
                         "pk": 15
-                }, {
+                    }, {
                         "title": "I Can't Give Everything Away",
                         "track_num": 7,
                         "length": 347,
                         "pk": 16
-                }, {
+                    }, {
                         "title": "Lazarus",
                         "track_num": 3,
                         "length": 382,
                         "pk": 17
-                }, {
+                    }, {
                         "title": "Tis A Pity She Was A Whore",
                         "track_num": 2,
                         "length": 292,
                         "pk": 18
-                }, {
+                    }, {
                         "title": "Girl Loves Me",
                         "track_num": 5,
                         "length": 291,
                         "pk": 19
-                }, {
+                    }, {
                         "title": "Sue (Or In A Season Of Crime)",
                         "track_num": 4,
                         "length": 280,
                         "pk": 20
-                }],
+                    }],
                     "year": 2016,
                     "pk": 1
-            },
+                },
                 {
-                    "name": "Currents",
+                    "album": "Currents",
                     "artist": "Tame Impala",
                     "num_tracks": 13,
                     "tracks": [{
@@ -68,70 +70,70 @@ describe('Penelope app', function () {
                         "track_num": 4,
                         "length": 270,
                         "pk": 1
-                }, {
+                    }, {
                         "title": "Let It Happen",
                         "track_num": 1,
                         "length": 466,
                         "pk": 2
-                }, {
+                    }, {
                         "title": "The Less I Know The Better",
                         "track_num": 7,
                         "length": 218,
                         "pk": 3
-                }, {
+                    }, {
                         "title": "Past Life",
                         "track_num": 8,
                         "length": 227,
                         "pk": 4
-                }, {
+                    }, {
                         "title": "Nangs",
                         "track_num": 2,
                         "length": 108,
                         "pk": 5
-                }, {
+                    }, {
                         "title": "The Moment",
                         "track_num": 3,
                         "length": 255,
                         "pk": 6
-                }, {
+                    }, {
                         "title": "New Person, Same Old Mistakes",
                         "track_num": 13,
                         "length": 362,
                         "pk": 7
-                }, {
+                    }, {
                         "title": "\u2018Cause I\u2019m A Man",
                         "track_num": 10,
                         "length": 241,
                         "pk": 8
-                }, {
+                    }, {
                         "title": "Eventually",
                         "track_num": 5,
                         "length": 319,
                         "pk": 9
-                }, {
+                    }, {
                         "title": "Gossip",
                         "track_num": 6,
                         "length": 55,
                         "pk": 10
-                }, {
+                    }, {
                         "title": "Love Paranoia",
                         "track_num": 12,
                         "length": 186,
                         "pk": 11
-                }, {
+                    }, {
                         "title": "Reality In Motion",
                         "track_num": 11,
                         "length": 252,
                         "pk": 12
-                }, {
+                    }, {
                         "title": "Disciples",
                         "track_num": 9,
                         "length": 108,
                         "pk": 13
-                }],
+                    }],
                     "year": 2015,
                     "pk": 2
-            }]);
+                }]);
 
             library = $('<library-view id="library"></library-view>');
             scope = _$rootScope_.$new();
@@ -359,14 +361,25 @@ describe('Penelope app', function () {
             describe("and its connection to the Playlist Service", function () {
                 var CurrentPlaylist;
 
-
-
                 beforeEach(inject(function (_CurrentPlaylist_) {
                     CurrentPlaylist = _CurrentPlaylist_;
                 }));
 
                 it("should append nothing to the playlist when nothing is selected", function () {
                     expect(CurrentPlaylist.tracks.length).toBe(0);
+                    library.find('#append-to-playlist').click();
+                    $timeout(function () {
+                        expect(CurrentPlaylist.tracks.length).toBe(0);
+                    });
+                });
+
+                it("should append something to the playlist when something is selected", function () {
+                    e.ctrlKey = true;
+                    e.metaKey = true;
+
+                    for (var i = 0; i < 4; i++) {
+                        $(tracks[i]).trigger(e);
+                    }
                     library.find('#append-to-playlist').click();
                     $timeout(function () {
                         expect(CurrentPlaylist.tracks.length).toBe(0);
