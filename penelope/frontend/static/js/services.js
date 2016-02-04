@@ -30,27 +30,22 @@
 
     penelopeServices.factory('PlaylistQueue', [function () {
         var svc = {};
-        
-        svc.tracks = [];
+        var position = 0;
+        svc.queue = [];
         svc.activeTrack = {};
-        svc.setActive = function(track) {
-            for (var prop in track) {
-            svc.activeTrack[prop] = track[prop];
-            }
+        svc.setActive = function(track, pos) {
+            svc.position = pos;
+            angular.extend(svc.activeTrack, track, {state: 'playing'});
         };
         svc.add = function (tracks) {
             if (tracks.constructor !== Array) {
                 tracks = [tracks];
             }
             for (var i = 0; i < tracks.length; i++) {
-                var newTrack = {},
-                    source = tracks[i];
-                for (var attr in source) {
-                    if (attr !== "$$hashKey" && attr !== "selected") {
-                        newTrack[attr] = source[attr];
-                    }
-                }
-                svc.tracks.push(newTrack);
+                var newTrack = angular.copy(tracks[i]);
+                delete newTrack.selected;
+                delete newTrack.$$hashKey;
+                svc.queue.push(newTrack);
             }
         };
 

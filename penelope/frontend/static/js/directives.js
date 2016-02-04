@@ -60,7 +60,7 @@
     penelopeDirectives.directive('playlistView', ['PlaylistQueue', function (PlaylistQueue) {
         function ctrl() {
             /*jshint validthis: true */
-            this.playlist = PlaylistQueue.tracks;
+            this.playlist = PlaylistQueue.queue;
             this.active = PlaylistQueue.activeTrack;
             this.selected = {};
             

@@ -361,10 +361,10 @@ describe('Penelope app', function () {
                 }));
 
                 it("should append nothing to the playlist when nothing is selected", function () {
-                    expect(PlaylistQueue.tracks.length).toBe(0);
+                    expect(PlaylistQueue.queue.length).toBe(0);
                     library.find('#append-to-playlist').click();
 
-                    expect(PlaylistQueue.tracks.length).toBe(0);;
+                    expect(PlaylistQueue.queue.length).toBe(0);;
                 });
 
                 it("should append something to the playlist when something is selected", function () {
@@ -374,7 +374,7 @@ describe('Penelope app', function () {
                         }));
                     }
                     library.find('#append-to-playlist').click();
-                    expect(PlaylistQueue.tracks.length).toBe(4);
+                    expect(PlaylistQueue.queue.length).toBe(4);
                 });
 
                 it("should clear all selections after appending to playlist", function () {
