@@ -31,7 +31,20 @@
     penelopeServices.factory('CurrentPlaylist', [function () {
         var svc = {};
         svc.tracks = [];
-        
+        svc.add = function (tracks) {
+            if (tracks.constructor !== Array) {
+                tracks = [tracks];
+            }
+            for (var i = 0; i < tracks.length; i++) {
+                svc.tracks.push({
+                    id: tracks.pk,
+                    title: tracks.title,
+                    album: tracks.album,
+                    artist: tracks.artist
+                });
+            }
+        };
+
         return svc;
     }]);
 })();

@@ -47,7 +47,7 @@
         };
     }]);
 
-    penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
+    penelopeDirectives.directive('libraryView', ['Library', 'CurrentPlaylist', function (Lib, CurrentPlaylist) {
         function ctrl() {
             /*jshint validthis: true */
             var self = this;
@@ -62,8 +62,12 @@
 
             this.packages = Lib.query();
             this.selectedTracks = {};
+            
             this.appendToPlaylist = function () {
                 console.log(this.selectedTracks);
+                for (var k in this.selectedTracks) {
+                    CurrentPlaylist.add(this.selectedTracks[k]);
+                }
             };
 
             this.clickTrack = function ($event, pack, track) {

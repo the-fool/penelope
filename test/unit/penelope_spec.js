@@ -1,14 +1,14 @@
 'use strict';
 
-describe('Penelope', function () {
+describe('Penelope app', function () {
 
     beforeEach(module('penelopeApp'));
     beforeEach(module('penelopeServices'));
-
+    beforeEach(module('penelopeDirectives'));
     describe('library view directive', function () {
         var scope, $compile, $httpBackend, library, libctrl, $timeout;
 
-        beforeEach(module('penelopeDirectives'));
+
 
         beforeEach(module('/static/partials/templates/library_view.html'));
 
@@ -154,10 +154,10 @@ describe('Penelope', function () {
 
         });
 
-        it('should initially have invisible tracklistings', inject(function ($compile, $rootScope) {
+        it('should initially have invisible tracklistings', function ($compile, $rootScope) {
             var listing = library.find('li.package-header').find('ul.package-listing').first();
             expect(listing).toHaveClass('ng-hide');
-        }));
+        });
 
         it('should show its track listings ordered by track_num', function () {
             var tracks = library.find('li.package-header').first().find('li.track');
@@ -166,7 +166,7 @@ describe('Penelope', function () {
             });
         });
 
-        describe("Library item click interface", function () {
+        describe("with resp. to its click interface", function () {
             var e, sel, packs, tracks;
 
             beforeEach(function () {
@@ -233,7 +233,7 @@ describe('Penelope', function () {
                         for (var j = 0; j <= i; j++) {
                             expect($(tracks[j])).toHaveClass('selected');
                         }
-                    }, 60);
+                    });
                 }
             });
 
@@ -254,7 +254,7 @@ describe('Penelope', function () {
                     }, 60);
                 }
             });
-            
+
             it('supports selection clicks in multiple packages', function () {
                 e.ctrlKey = true;
                 e.metaKey = true;
@@ -262,7 +262,9 @@ describe('Penelope', function () {
                 $(packs[0]).find('li.track').first().trigger(e);
                 $(packs[1]).find('li.track').first().trigger(e);
                 scope.$digest();
-                $timeout(function() {expect(Object.keys(sel).length).toBe(2)});
+                $timeout(function () {
+                    expect(Object.keys(sel).length).toBe(2)
+                });
             });
 
             it('clears all packages and add a single item with a normal click', function () {
@@ -271,7 +273,6 @@ describe('Penelope', function () {
 
                 var tracks1 = $(packs[0]).find('li.track'),
                     tracks2 = $(packs[1]).find('li.track');
-                //console.log($(packs[0]).find('li.track'));
                 for (var i = 0; i < 3; i++) {
                     $(tracks1[i]).trigger(e);
                     $(tracks2[i]).trigger(e);
@@ -284,30 +285,94 @@ describe('Penelope', function () {
                 e.ctrlKey = false;
                 e.metaKey = false;
                 $(tracks1[3]).trigger(e);
-                $timeout(function() {
-                   expect(Object.keys(sel).length).toBe(1);
+                $timeout(function () {
+                    expect(Object.keys(sel).length).toBe(1);
                 });
             });
-            
-            it('should expand and minimize a listing when the anchor is clicked', function() {
+
+            it('should expand and minimize a listing when the anchor is clicked', function () {
                 var listing = $(library.find('ul.package-listing')).first();
                 expect(listing).toHaveClass('ng-hide');
-                library.find('a.expand-listing').first().click(); 
-                $timeout(function() {expect(listing).not.toHaveClass('ng-hide');});
-                 library.find('a.expand-listing').first().click(); 
-                $timeout(function() {expect(listing).toHaveClass('ng-hide');});
+                library.find('a.expand-listing').first().click();
+                $timeout(function () {
+                    expect(listing).not.toHaveClass('ng-hide');
+                });
+                library.find('a.expand-listing').first().click();
+                $timeout(function () {
+                    expect(listing).toHaveClass('ng-hide');
+                });
             });
-            
-            it('should clear a packgaes selection when a pack is minimized', function() {
+
+            it('should clear a packgaes selection when a pack is minimized', function () {
+                e.ctrlKey = true;
+                e.metaKey = true;
                 var anchor = library.find('a.expand-listing').first();
                 anchor.click();
-                
+
                 for (var i = 0; i < 3; i++) {
                     $(tracks[i]).trigger(e);
                 }
                 anchor.click();
-                expect(Object.keys(sel).length).toBe(0);
-                
+                $timeout(function () {
+                    expect(Object.keys(sel).length).toBe(0);
+                });
+            });
+
+            it('should remove ".selected" class when a package is cleared', function () {
+                e.ctrlKey = true;
+                e.metaKey = true;
+                var anchor = library.find('a.expand-listing').first();
+                anchor.click();
+
+                for (var i = 0; i < 4; i++) {
+                    $(tracks[i]).trigger(e);
+                }
+
+                anchor.click();
+
+                $timeout(function () {
+                    for (var i = 0; i < 4; i++) {
+                        expect($(tracks[i])).not.toHaveClass('selected');
+                    }
+                });
+            });
+
+            it('should clear the selected items of the minimized pack, and leave the others alone', function () {
+                var anchors = library.find('a.expand-listing');
+                $(anchors[0]).click();
+                $(anchors[1]).click();
+
+                var tracks1 = $(packs[0]).find('li.track'),
+                    tracks2 = $(packs[1]).find('li.track');
+                for (var i = 0; i < 3; i++) {
+                    $(tracks1[i]).trigger(e);
+                    $(tracks2[i]).trigger(e);
+                }
+                $(anchors[0]).click();
+                $timeout(function () {
+                    var keys = Object.keys(sel);
+                    expect(keys.length).toBe(1);
+                    expect(sel[keys[0]].length).toBe(3);
+                });
+            });
+
+            describe("and its connection to the Playlist Service", function () {
+                var CurrentPlaylist;
+
+
+
+                beforeEach(inject(function (_CurrentPlaylist_) {
+                    CurrentPlaylist = _CurrentPlaylist_;
+                }));
+
+                it("should append nothing to the playlist when nothing is selected", function () {
+                    expect(CurrentPlaylist.tracks.length).toBe(0);
+                    library.find('#append-to-playlist').click();
+                    $timeout(function () {
+                        expect(CurrentPlaylist.tracks.length).toBe(0);
+                    });
+                });
+
             });
         });
     });
