@@ -6,7 +6,10 @@
     <br>
     <div>
         <span class='controls'>
-    <i class='fa fa-play'></i><i class='fa fa-pause'></i><i class='fa fa-step-backward'></i><i class='fa fa-step-forward'></i>
+            <a ng-click="transportCtrl.play()"><i class='fa fa-play'></i></a>
+            <a ng-click="transportCtrl.pause()"><i class='fa fa-pause'></i></a>
+            <a ng-click="transportCtrl.back()"><i class='fa fa-step-backward'></i></a>
+            <a ng-click="transportCtrl.fore()"><i class='fa fa-step-forward'></i></a>
     </span>
     </div>
 </div>

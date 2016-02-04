@@ -4,34 +4,46 @@
     var penelopeDirectives = angular.module('penelopeDirectives', []);
     penelopeDirectives.baseTemplateUrl = '/static/partials/';
 
-    penelopeDirectives.directive('jukebox', function() {
-       function ctrl() {
-           
-       }
-       return {
-           restrict: 'E',
-           templateUrl: penelopeDirectives.baseTemplateUrl + 'jukebox.html',
-           scope: {},
-           controller: ctrl,
-           controllerAs: 'jukeboxCtrl',
-           bindToController: true
-       };
-    });
-    
-    penelopeDirectives.directive('transport', ['PlaylistQueue', function(PlaylistQueue) {
+    penelopeDirectives.directive('jukebox', function () {
         function ctrl() {
-            /*jshint validthis: true */
-            this.track = PlaylistQueue.activeTrack;       
+
         }
         return {
-           restrict: 'E',
-           templateUrl: penelopeDirectives.baseTemplateUrl + 'transport.html',
-           scope: {},
-           controller: ctrl,
+            restrict: 'E',
+            templateUrl: penelopeDirectives.baseTemplateUrl + 'jukebox.html',
+            scope: {},
+            controller: ctrl,
+            controllerAs: 'jukeboxCtrl',
+            bindToController: true
+        };
+    });
+
+    penelopeDirectives.directive('transport', ['PlaylistQueue', function (PlaylistQueue) {
+        function ctrl() {
+            /*jshint validthis: true */
+            this.track = PlaylistQueue.activeTrack;
+            this.play = function() {
+                
+            };
+            this.pause = function() {
+                
+            };
+            this.fore = function() {
+                
+            };
+            this.back = function() {
+                
+            };
+        }
+        return {
+            restrict: 'E',
+            templateUrl: penelopeDirectives.baseTemplateUrl + 'transport.html',
+            scope: {},
+            controller: ctrl,
             replace: true,
-           controllerAs: 'transportCtrl',
-           bindToController: true
-       };
+            controllerAs: 'transportCtrl',
+            bindToController: true
+        };
     }]);
     /* --- PLAYLIST ROW --- */
 
@@ -63,12 +75,12 @@
             this.playlist = PlaylistQueue.queue;
             this.active = PlaylistQueue.activeTrack;
             this.selected = {};
-            
-            this.select = function(track) {
-                this.selected = track;     
+
+            this.select = function (track) {
+                this.selected = track;
             };
-            this.activate = function(track) {
-               PlaylistQueue.setActive(track);
+            this.activate = function (track) {
+                PlaylistQueue.setActive(track);
             };
         }
 
