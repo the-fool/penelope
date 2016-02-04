@@ -54,10 +54,10 @@
             
             var clearPackage = function (key) {
                 if (!self.selectedTracks[key]) { return; }
-                for (var i = 0; i < this.selectedTracks[key].length; i++) {
-                    this.selectedTracks[key][i].selected = false;
+                for (var i = 0; i < self.selectedTracks[key].length; i++) {
+                    self.selectedTracks[key][i].selected = false;
                 }
-                delete this.selectedTracks[key];
+                delete self.selectedTracks[key];
             };
 
             this.packages = Lib.query();

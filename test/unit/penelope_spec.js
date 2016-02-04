@@ -290,16 +290,24 @@ describe('Penelope', function () {
             });
             
             it('should expand and minimize a listing when the anchor is clicked', function() {
-                var listing = $(library.find('ul.package-listing'));
+                var listing = $(library.find('ul.package-listing')).first();
                 expect(listing).toHaveClass('ng-hide');
-                library.find('a.expand-listing').click(); 
+                library.find('a.expand-listing').first().click(); 
                 $timeout(function() {expect(listing).not.toHaveClass('ng-hide');});
-                 library.find('a.expand-listing').click(); 
+                 library.find('a.expand-listing').first().click(); 
                 $timeout(function() {expect(listing).toHaveClass('ng-hide');});
             });
             
             it('should clear a packgaes selection when a pack is minimized', function() {
-                library.find('a.expand-listing').click();    
+                var anchor = library.find('a.expand-listing').first();
+                anchor.click();
+                
+                for (var i = 0; i < 3; i++) {
+                    $(tracks[i]).trigger(e);
+                }
+                anchor.click();
+                expect(Object.keys(sel).length).toBe(0);
+                
             });
         });
     });
