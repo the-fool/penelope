@@ -166,7 +166,7 @@ describe('Penelope', function () {
             });
         });
 
-        describe("clicking library items", function () {
+        describe("Library item click interface", function () {
             var e, sel, packs, tracks;
 
             beforeEach(function () {
@@ -287,6 +287,19 @@ describe('Penelope', function () {
                 $timeout(function() {
                    expect(Object.keys(sel).length).toBe(1);
                 });
+            });
+            
+            it('should expand and minimize a listing when the anchor is clicked', function() {
+                var listing = $(library.find('ul.package-listing'));
+                expect(listing).toHaveClass('ng-hide');
+                library.find('a.expand-listing').click(); 
+                $timeout(function() {expect(listing).not.toHaveClass('ng-hide');});
+                 library.find('a.expand-listing').click(); 
+                $timeout(function() {expect(listing).toHaveClass('ng-hide');});
+            });
+            
+            it('should clear a packgaes selection when a pack is minimized', function() {
+                library.find('a.expand-listing').click();    
             });
         });
     });

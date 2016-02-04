@@ -50,9 +50,10 @@
     penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
         function ctrl() {
             /*jshint validthis: true */
-
+            var self = this;
+            
             var clearPackage = function (key) {
-                if (!this.selectedTracks[key]) { return; }
+                if (!self.selectedTracks[key]) { return; }
                 for (var i = 0; i < this.selectedTracks[key].length; i++) {
                     this.selectedTracks[key][i].selected = false;
                 }
@@ -95,7 +96,7 @@
                 }
             };
 
-            this.selectPackage = function ($event, pack) {
+            this.selectPackage = function (pack) {
                 pack.selected = !pack.selected;
             };
 

@@ -2,9 +2,10 @@
     <input type="button" ng-click="libctrl.appendToPlaylist()">
     <ul>
         <span ng-repeat="pack in libctrl.packages">
-            <a ng-click="libctrl.expand($event, pack)">+</a>
+            <a class="expand-listing" 
+               ng-click="libctrl.expand(pack)">+</a>
             <li class="package-header" 
-                ng-click="libctrl.selectPackage($event, pack)"
+                ng-click="libctrl.selectPackage(pack)"
                 data-pk="{{pack.pk}}"
                 ng-show="([pack] | filter:searchFilter).length > 0">
                 {{pack.artist}} - {{pack.name}} [{{pack.year}}] <em>({{pack.num_tracks}})</em>
