@@ -7,7 +7,8 @@ css_penelope = Bundle('css/penelope.css')
 
 # : consolidated css bundle
 
-css_all = Bundle('bower_components/bootstrap/dist/css/bootstrap.min.css'
+css_all = Bundle('bower_components/bootstrap/dist/css/bootstrap.min.css',
+                 'bower_components/components-font-awesome/css/font-awesome.min.css'
                  )
 
 # : vendor js bundle

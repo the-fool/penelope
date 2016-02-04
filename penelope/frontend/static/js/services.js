@@ -37,7 +37,6 @@
             for (var prop in track) {
             svc.activeTrack[prop] = track[prop];
             }
-            //console.log(svc.activeTrack);
         };
         svc.add = function (tracks) {
             if (tracks.constructor !== Array) {

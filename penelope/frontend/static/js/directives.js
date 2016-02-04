@@ -21,7 +21,7 @@
     penelopeDirectives.directive('transport', ['PlaylistQueue', function(PlaylistQueue) {
         function ctrl() {
             /*jshint validthis: true */
-            this.track = {};       
+            this.track = PlaylistQueue.activeTrack;       
         }
         return {
            restrict: 'E',
