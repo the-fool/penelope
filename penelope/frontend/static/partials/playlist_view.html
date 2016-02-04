@@ -16,8 +16,9 @@
     <tbody>
         <tr ng-repeat="track in playlistCtrl.playlist" 
             class="track-row" 
-            ng-class="{active: track.active, selected: (track === playlistCtrl.selected)}"
+            ng-class="{active: (track.pk === playlistCtrl.active.pk), selected: (track === playlistCtrl.selected)}"
             playlist-row track="track" 
-            ng-click="playlistCtrl.select(track)"></tr>
+            ng-click="$evalAsync(playlistCtrl.select(track))"
+            ng-dblclick="playlistCtrl.activate(track)"></tr>
     </tbody>
 </table>

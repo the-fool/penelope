@@ -376,9 +376,9 @@ describe('Penelope app', function () {
                     library.find('#append-to-playlist').click();
                     expect(PlaylistQueue.tracks.length).toBe(4);
                 });
-                
-                it("should clear all selections after appending to playlist", function() {
-                     for (var i = 0; i < 4; i++) {
+
+                it("should clear all selections after appending to playlist", function () {
+                    for (var i = 0; i < 4; i++) {
                         $(tracks[i]).trigger($.Event('click', {
                             ctrlKey: true
                         }));
@@ -433,7 +433,7 @@ describe('Penelope app', function () {
         beforeEach(inject(function (_PlaylistQueue_) {
             PlaylistQueue = _PlaylistQueue_;
         }));
- 
+
         beforeEach(inject(function (_$rootScope_, $compile) {
             playlist = $('<playlist-view id="playlist"></playlist-view>');
             scope = _$rootScope_.$new();
@@ -441,21 +441,52 @@ describe('Penelope app', function () {
             scope.$digest();
             playlistCtrl = playlist.isolateScope().playlistCtrl;
         }));
-        
-        it('should be empty initially', function() {
-           expect(playlistCtrl.playlist.length).toBe(0); 
+
+        it('should be empty initially', function () {
+            expect(playlistCtrl.playlist.length).toBe(0);
         });
-        
-        it('should render the PlaylistQueue serveice',function() {
+
+        it('should render the PlaylistQueue serveice', function () {
             PlaylistQueue.add(data);
             scope.$digest();
             var tracks = playlist.find('tr.track-row');
             expect(tracks.length).toBe(data.length);
             expect($(tracks[0]).find('td.title').text()).toBe('Blackstar');
         });
-        
-        describe("with resp. to its interface with transport", function() {
+
+        describe('with resp. to its click interface', function () {
+            var tracks;
+            beforeEach(function () {
+                PlaylistQueue.add(data);
+                scope.$digest();
+                tracks = playlist.find('tr.track-row');
+            });
+
+            it('select a track when clicked', function () {
+                expect($(tracks[0])).not.toHaveClass('selected');
+                $(tracks[0]).trigger('click');
+                expect($(tracks[0])).toHaveClass('selected');
+            });
+
+            it('deselects a selected track when one is clicked', function () {
+                $(tracks[0]).trigger('click');
+                $(tracks[1]).trigger('click');
+                expect($(tracks[0])).not.toHaveClass('selected');
+                expect($(tracks[1])).toHaveClass('selected');
+            });
             
+            it('activates a track on double-click', function() {
+                $(tracks[0]).trigger('click');
+                 expect($(tracks[0])).not.toHaveClass('active');
+                $(tracks[0]).trigger('dblclick');
+                scope.$digest();
+                expect($(tracks[0])).toHaveClass('active');
+                expect($(tracks[0])).toHaveClass('selected');
+            });
+        });
+
+        describe("with resp. to its interface with transport", function () {
+
         });
     });
 });

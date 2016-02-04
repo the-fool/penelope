@@ -18,7 +18,7 @@
        };
     });
     
-    penelopeDirectives.directive('transport', function() {
+    penelopeDirectives.directive('transport', ['PlaylistQueue', function(PlaylistQueue) {
         function ctrl() {
             /*jshint validthis: true */
             this.track = {};       
@@ -31,7 +31,7 @@
            controllerAs: 'transportCtrl',
            bindToController: true
        };
-    });
+    }]);
     /* --- PLAYLIST ROW --- */
 
     penelopeDirectives.directive('playlistRow', function () {
@@ -60,13 +60,14 @@
         function ctrl() {
             /*jshint validthis: true */
             this.playlist = PlaylistQueue.tracks;
-            this.selected = {}
+            this.active = PlaylistQueue.activeTrack;
+            this.selected = {};
+            
             this.select = function(track) {
                 this.selected = track;     
             };
             this.activate = function(track) {
-                console.log('activated track');
-                //PlaylistQueue.setActive(track);
+               PlaylistQueue.setActive(track);
             };
         }
 

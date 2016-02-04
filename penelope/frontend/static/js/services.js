@@ -28,15 +28,16 @@
             });
     }]);
 
-    penelopeServices.factory('PlaylistQueue', [function () {
+    penelopeServices.factory('PlaylistQueue', ['$rootScope', function ($rootScope) {
         var svc = {};
+        
         svc.tracks = [];
         svc.activeTrack = {};
         svc.setActive = function(track) {
-            console.log(track);
-            svc.activeTrack.active = false;
-            track.active = true;
-            svc.activeTrack = track;  
+            for (var prop in track) {
+            svc.activeTrack[prop] = track[prop];
+            }
+            //console.log(svc.activeTrack);
         };
         svc.add = function (tracks) {
             if (tracks.constructor !== Array) {
