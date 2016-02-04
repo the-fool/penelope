@@ -134,11 +134,12 @@ describe('Penelope', function () {
             }]);
 
             library = $('<library-view id="library"></library-view>');
-            scope = _$rootScope_;
+            scope = _$rootScope_.$new();
             $httpBackend.expectGET('api/library');
             $compile(library)(scope);
             scope.$digest();
             $httpBackend.flush();
+            $timeout.flush();
             libctrl = library.isolateScope().libctrl;
         }));
 
@@ -150,6 +151,7 @@ describe('Penelope', function () {
         it('should have an unordered list', function () {
             var list = library.find('ul');
             expect(list.length).not.toBeLessThan(1);
+
         });
 
         it('should initially have invisible tracklistings', inject(function ($compile, $rootScope) {
@@ -166,18 +168,18 @@ describe('Penelope', function () {
 
         describe("clicking library items", function () {
             var e, sel, packs, tracks;
-            
-            beforeEach(function() {
+
+            beforeEach(function () {
                 e = $.Event('click');
                 sel = libctrl.selectedTracks;
                 packs = library.find('li.package-header');
                 tracks = $(packs[0]).find('li.track');
             });
-            
-            it('should have an initially empty selected track object', function() {
+
+            it('should have an initially empty selected track object', function () {
                 expect(Object.keys(sel).length).toBe(0);
             });
-            
+
             it('selects a single track on track click', function () {
                 var i = Math.floor(Math.random() * (tracks.length));
                 var t = $(tracks[i]);
@@ -212,30 +214,30 @@ describe('Penelope', function () {
             it('should deselect all when a single item is clicked', function () {
                 for (var i = 0; i < 4; i++) {
                     $(tracks[i]).trigger(e);
-                    $(tracks[i+1]).trigger(e);
+                    $(tracks[i + 1]).trigger(e);
                     // allow time to $digest
-                    $timeout(function() {
+                    $timeout(function () {
                         expect($(tracks[i])).not.toHaveClass('selected');
-                        expect($(tracks[i + 1])).toHaveClass('selected');    
+                        expect($(tracks[i + 1])).toHaveClass('selected');
                     }, 60);
                 }
             });
-            
-            it('should select multiple items with ctrl/meta+click', function() {
+
+            it('should select multiple items with ctrl/meta+click', function () {
                 e.ctrlKey = true;
                 e.metaKey = true;
                 for (var i = 0; i < 4; i++) {
                     $(tracks[i]).trigger(e);
                     // allow time to $digest
-                    $timeout(function() {
+                    $timeout(function () {
                         for (var j = 0; j <= i; j++) {
-                            expect($(tracks[j])).toHaveClass('selected');     
+                            expect($(tracks[j])).toHaveClass('selected');
                         }
                     }, 60);
                 }
             });
-            
-            it('should deselect multiple items with ctrl/meta+click', function() {
+
+            it('should deselect multiple items with ctrl/meta+click', function () {
                 e.ctrlKey = true;
                 e.metaKey = true;
                 for (var i = 0; i < 4; i++) {
@@ -244,14 +246,48 @@ describe('Penelope', function () {
                 for (var i = 0; i < 3; i++) {
                     $(tracks[i]).trigger(e);
                     // allow time to $digest
-                    $timeout(function() {
-                        for (var j = 0; j <= i; j++) {                   
-                            expect($(tracks[j + 1])).toHaveClass('selected');     
-                            expect($(tracks[j])).not.toHaveClass('selected');     
+                    $timeout(function () {
+                        for (var j = 0; j <= i; j++) {
+                            expect($(tracks[j + 1])).toHaveClass('selected');
+                            expect($(tracks[j])).not.toHaveClass('selected');
                         }
                     }, 60);
                 }
-            });          
+            });
+            
+            it('supports selection clicks in multiple packages', function () {
+                e.ctrlKey = true;
+                e.metaKey = true;
+
+                $(packs[0]).find('li.track').first().trigger(e);
+                $(packs[1]).find('li.track').first().trigger(e);
+                scope.$digest();
+                $timeout(function() {expect(Object.keys(sel).length).toBe(2)});
+            });
+
+            it('clears all packages and add a single item with a normal click', function () {
+                e.ctrlKey = true;
+                e.metaKey = true;
+
+                var tracks1 = $(packs[0]).find('li.track'),
+                    tracks2 = $(packs[1]).find('li.track');
+                //console.log($(packs[0]).find('li.track'));
+                for (var i = 0; i < 3; i++) {
+                    $(tracks1[i]).trigger(e);
+                    $(tracks2[i]).trigger(e);
+                }
+                $timeout(function () {
+                    for (var k in sel) {
+                        expect(sel[k].length).toBe(3);
+                    }
+                });
+                e.ctrlKey = false;
+                e.metaKey = false;
+                $(tracks1[3]).trigger(e);
+                $timeout(function() {
+                   expect(Object.keys(sel).length).toBe(1);
+                });
+            });
         });
     });
 });

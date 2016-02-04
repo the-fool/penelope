@@ -47,9 +47,18 @@
         };
     }]);
 
-    penelopeDirectives.directive('libraryView', ['Library', '$timeout', function (Lib) {
+    penelopeDirectives.directive('libraryView', ['Library', function (Lib) {
         function ctrl() {
             /*jshint validthis: true */
+
+            var clearPackage = function (key) {
+                if (!this.selectedTracks[key]) { return; }
+                for (var i = 0; i < this.selectedTracks[key].length; i++) {
+                    this.selectedTracks[key][i].selected = false;
+                }
+                delete this.selectedTracks[key];
+            };
+
             this.packages = Lib.query();
             this.selectedTracks = {};
             this.appendToPlaylist = function () {
@@ -61,15 +70,12 @@
                 // dirty state
                 if (keys) {
                     if (!$event.ctrlKey && !$event.metaKey) {
-                        for (var k in this.selectedTracks) {
-                            for (var i = 0; i < this.selectedTracks[k].length; i++) {
-                                this.selectedTracks[k][i].selected = false;
-                            }
-                            delete this.selectedTracks[k];
+                        for (var key in this.selectedTracks) {
+                            clearPackage(key);
                         }
                     }
                 }
-                
+
                 track.selected = !track.selected;
                 // populate the object
                 if (track.selected) {
@@ -79,18 +85,20 @@
                         this.selectedTracks[pack.pk] = [track];
                     }
                 }
+                //console.log(this.selectedTracks);
             };
 
-            this.expand = function ($event, pack) {
+            this.expand = function (pack) {
                 pack.show = !pack.show;
                 if (!pack.show) {
-                    $($event.currentTarget).parent().find('li.track').removeClass('selected');
+                    clearPackage(pack.pk);
                 }
             };
 
             this.selectPackage = function ($event, pack) {
                 pack.selected = !pack.selected;
             };
+
         }
         return {
             templateUrl: penelopeDirectives.baseTemplateUrl + 'library_view.html',
