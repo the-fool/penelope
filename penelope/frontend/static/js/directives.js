@@ -28,6 +28,7 @@
            templateUrl: penelopeDirectives.baseTemplateUrl + 'transport.html',
            scope: {},
            controller: ctrl,
+            replace: true,
            controllerAs: 'transportCtrl',
            bindToController: true
        };

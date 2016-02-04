@@ -28,7 +28,7 @@
             });
     }]);
 
-    penelopeServices.factory('PlaylistQueue', ['$rootScope', function ($rootScope) {
+    penelopeServices.factory('PlaylistQueue', [function () {
         var svc = {};
         
         svc.tracks = [];

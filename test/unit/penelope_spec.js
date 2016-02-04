@@ -392,6 +392,7 @@ describe('Penelope app', function () {
 
     describe('playlist view directive', function () {
         var scope, $compile, playlist, playlistCtrl;
+        var transport, transportCtrl;
         var PlaylistQueue;
         var data = [
             {
@@ -430,11 +431,10 @@ describe('Penelope app', function () {
         ]
         beforeEach(module(tplDir + 'playlist_view.html'));
         beforeEach(module(tplDir + 'playlist_row.html'));
-        beforeEach(inject(function (_PlaylistQueue_) {
-            PlaylistQueue = _PlaylistQueue_;
-        }));
+        beforeEach(module(tplDir + 'transport.html'));
 
-        beforeEach(inject(function (_$rootScope_, $compile) {
+        beforeEach(inject(function (_$rootScope_, $compile, _PlaylistQueue_) {
+            PlaylistQueue = _PlaylistQueue_;
             playlist = $('<playlist-view id="playlist"></playlist-view>');
             scope = _$rootScope_.$new();
             $compile(playlist)(scope);
@@ -474,19 +474,106 @@ describe('Penelope app', function () {
                 expect($(tracks[0])).not.toHaveClass('selected');
                 expect($(tracks[1])).toHaveClass('selected');
             });
-            
-            it('activates a track on double-click', function() {
+
+            it('activates a track on double-click', function () {
                 $(tracks[0]).trigger('click');
-                 expect($(tracks[0])).not.toHaveClass('active');
+                expect($(tracks[0])).not.toHaveClass('active');
                 $(tracks[0]).trigger('dblclick');
-                scope.$digest();
+                //scope.$digest();
                 expect($(tracks[0])).toHaveClass('active');
                 expect($(tracks[0])).toHaveClass('selected');
             });
+
+            describe("and its interface with the transport", function () {
+
+                beforeEach(inject(function ($compile) {
+                    transport = $('<transport></transport>');
+                    $compile(transport)(scope);
+                    scope.$digest();
+                    transportCtrl = transport.isolateScope().transportCtrl;
+                }));
+
+                it('should send an activated track to the transport', function () {
+                    expect(Object.keys(transportCtrl.track).length).toBe(0);
+                    $(tracks[0]).trigger('dblclick');
+                    expect(Object.keys(transportCtrl.track).length).not.toBe(0);
+                });
+
+                it('should send the correct activated track to the transport', function () {
+                    $(tracks[0]).trigger('dblclick');
+                    expect(transportCtrl.track.title).toBe('Blackstar');
+                    expect(transport.find('.title').text()).toBe('Blackstar');
+
+                    $(tracks[1]).trigger('dblclick');
+                    expect(transportCtrl.track.title).toBe('Tis A Pity She Was A Whore');
+                    expect(transport.find('.title').text()).toBe('Tis A Pity She Was A Whore');
+                });
+
+            });
         });
 
-        describe("with resp. to its interface with transport", function () {
+    });
 
+    describe('transport directive', function () {
+        var scope, $compile, transport, transportCtrl;
+        var PlaylistQueue;
+        var data = [
+            {
+                title: 'Blackstar',
+                track_num: 1,
+                length: 597,
+                pk: 14,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }, {
+                title: 'Tis A Pity She Was A Whore',
+                track_num: 2,
+                length: 292,
+                pk: 18,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }, {
+                title: 'Lazarus',
+                track_num: 3,
+                length: 382,
+                pk: 17,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }, {
+                title: 'Sue (Or In A Season Of Crime)',
+                track_num: 4,
+                length: 280,
+                pk: 20,
+                album: 'Blackstar',
+                artist: 'David Bowie',
+                year: 2016
+            }
+        ]
+
+        beforeEach(module(tplDir + 'transport.html'));
+
+        beforeEach(inject(function (_$rootScope_, $compile, _PlaylistQueue_) {
+            PlaylistQueue = _PlaylistQueue_;
+            PlaylistQueue.add(data);
+            transport = $('<transport></transport>');
+            scope = _$rootScope_.$new();
+            $compile(transport)(scope);
+            scope.$digest();
+            transportCtrl = transport.isolateScope().transportCtrl;
+        }));
+
+        it('should sync with PlaylistQueue active track', function () {
+            expect(Object.keys(transportCtrl.track).length).toBe(0);
+            PlaylistQueue.setActive(data[0]);
+            scope.$digest();
+            expect(Object.keys(transportCtrl.track).length).not.toBe(0);
+            expect(transportCtrl.track.title).toBe('Blackstar');
+            expect(transport.find('.title').text()).toBe('Blackstar');
         });
+        
+
     });
 });

@@ -17,9 +17,14 @@ li.selected {
 }
 #playlist tr.selected{
     color:green;
-
 }
 
+span.controls {
+    font-size: 2em;
+}
+span.controls i {
+    padding-right: 2em;
+}
 .fixed_headers {
   width: 100%;
   table-layout: fixed;
