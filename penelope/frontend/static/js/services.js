@@ -18,6 +18,10 @@
         var svc = {};
         svc.state = {};
         svc.start = function (pk) {
+            if (!pk) {
+                return;  
+            }
+            
             $http({
                 method: 'GET',
                 url: '/api/player/start/' + pk,

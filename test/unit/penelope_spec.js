@@ -593,8 +593,13 @@ describe('Penelope app', function () {
             expect(transportCtrl.track.title).toBe('Blackstar');
             expect(transport.find('.title').text()).toBe('Blackstar');
         });
-
-        it('should not set the first track in the queue to active on click play from init', function () {
+        
+        it('should not send an http request with an empty queue', function() {
+            transportCtrl.play();
+            // notice no $httpBackend.expectGET() 
+        });
+        
+        it('should set the first track in the queue to active on click play from init', function () {
             PlaylistQueue.add(data);
             scope.$digest();
             $httpBackend.expectGET('/api/player/start/14').respond(200);
@@ -602,7 +607,42 @@ describe('Penelope app', function () {
             $httpBackend.flush();
             expect(PlaylistQueue.activeTrack.title).toBe('Blackstar');
         });
-
+        
+        it('should pause a playing track', function() {
+    
+            
+        });
+        
+        describe('click controlls', function() {
+            beforeEach(function() {
+               $httpBackend.whenGET('/api/player\/.*/').respond(200);
+            });
+            
+            it("should call play", function() {
+                spyOn(transportCtrl, 'play');
+                transport.find('#play-button').click();
+                expect(transportCtrl.play).toHaveBeenCalled();
+            }); 
+            
+            it("should call pause", function() {
+                spyOn(transportCtrl, 'pause');
+                transport.find('#pause-button').click();
+                expect(transportCtrl.pause).toHaveBeenCalled();
+            });
+            
+            it("should call play", function() {
+                spyOn(transportCtrl, 'fore');
+                transport.find('#fore-button').click();
+                expect(transportCtrl.fore).toHaveBeenCalled();
+            }); 
+            
+            it("should call play", function() {
+                spyOn(transportCtrl, 'back');
+                transport.find('#back-button').click();
+                expect(transportCtrl.back).toHaveBeenCalled();
+            }); 
+        });
+        
         describe('and its http actions', function () {
 
             it('should fire an http request when play is clicked', function () {
