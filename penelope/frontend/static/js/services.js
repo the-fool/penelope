@@ -5,46 +5,48 @@
 
     penelopeServices.factory('Track', ['$resource', function ($r) {
         return $r('api/tracks', {}, {
-                query: {
-                    method: 'GET'
-                },
-                update: {
-                    method: 'POST'
-                }
-            });
+            query: {
+                method: 'GET'
+            },
+            update: {
+                method: 'POST'
+            }
+        });
     }]);
-    
-    penelopeServices.factory('Player', ['$http', function($http) {
+
+    penelopeServices.factory('Player', ['$http', function ($http) {
         var svc = {};
         svc.state = {};
-        svc.start = function(pk) {
+        svc.start = function (pk) {
             $http({
                 method: 'GET',
                 url: 'api/player/start',
-                params: {'pk':pk}
-            }).then(function success (response) {
+                params: {
+                    'pk': pk
+                }
+            }).then(function success(response) {
                 if (response.status === 200) {
                     angular.copy(response.data, svc.state);
                 } else {
                     console.log("Response code: " + response.status);
                 }
-            }, function error (response) {
-               throw "Player: Start threw up " + response.status; 
+            }, function error(response) {
+                throw "Player: Start threw up " + response.status;
             });
         };
-        svc.pause = function() {
+        svc.pause = function () {
             $http({
                 method: 'GET',
                 url: 'api/player/pause',
                 params: {}
-            }).then(function success (response) {
+            }).then(function success(response) {
                 if (response.status === 200) {
                     angular.copy(response.data, svc.state);
                 } else {
                     console.log("Response code: " + response.status);
                 }
-            }, function error (response) {
-               throw "Player: Start threw up " + response.status; 
+            }, function error(response) {
+                throw "Player: Start threw up " + response.status;
             });
         };
         return svc;
@@ -65,16 +67,26 @@
 
     penelopeServices.factory('PlaylistQueue', [function () {
         var svc = {};
-        var position = 0;
+
+        svc.position = 0;
         svc.queue = [];
         svc.activeTrack = {};
         svc.setActive = function (track, pos) {
+            if (svc.queue.length === 0) {
+                return;
+            } // I look forward to widespread support for ES6 
+            else if (!track) {
+                var pos = 0;
+                var track = svc.queue[0];
+            }
+
             svc.position = pos;
             angular.extend(svc.activeTrack, track, {
                 state: 'playing',
                 time: 0
             });
         };
+        
         svc.add = function (tracks) {
             if (tracks.constructor !== Array) {
                 tracks = [tracks];

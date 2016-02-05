@@ -25,7 +25,8 @@
 
             this.play = function() {
                 if (!this.track.state) {
-                    return;
+                    PlaylistQueue.setActive();
+                    Player.start(this.track.pk);
                 }
                 else if (this.track.state === 'playing') {
                     Player.start(this.track.pk);

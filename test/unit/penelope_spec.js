@@ -135,7 +135,7 @@ describe('Penelope app', function () {
 
             library = $('<library-view id="library"></library-view>');
             scope = _$rootScope_.$new();
-            $httpBackend.expectGET('api/library');
+            //$httpBackend.expectGET('api/library');
             $compile(library)(scope);
             scope.$digest();
             $httpBackend.flush();
@@ -484,6 +484,14 @@ describe('Penelope app', function () {
                 expect($(tracks[0])).toHaveClass('selected');
             });
 
+            it('should send the correct playlist position to the queue', function () {
+                for (var i = 0; i < 3; i++) {
+                    $(tracks[i]).trigger('dblclick');
+                    expect(PlaylistQueue.position).toBe(i);
+                }
+
+            })
+
             describe("and its interface with the transport", function () {
 
                 beforeEach(inject(function ($compile) {
@@ -508,6 +516,7 @@ describe('Penelope app', function () {
                     expect(transportCtrl.track.title).toBe('Tis A Pity She Was A Whore');
                     expect(transport.find('.title').text()).toBe('Tis A Pity She Was A Whore');
                 });
+
 
             });
         });
@@ -557,7 +566,6 @@ describe('Penelope app', function () {
 
         beforeEach(inject(function (_$rootScope_, $compile, _PlaylistQueue_, _Player_) {
             PlaylistQueue = _PlaylistQueue_;
-            PlaylistQueue.add(data);
             Player = _Player_;
             transport = $('<transport></transport>');
             scope = _$rootScope_.$new();
@@ -566,8 +574,10 @@ describe('Penelope app', function () {
             transportCtrl = transport.isolateScope().transportCtrl;
         }));
 
+
         it('should sync with PlaylistQueue active track', function () {
             expect(Object.keys(transportCtrl.track).length).toBe(0);
+            PlaylistQueue.add(data);
             PlaylistQueue.setActive(data[0]);
             scope.$digest();
             expect(Object.keys(transportCtrl.track).length).not.toBe(0);
@@ -575,6 +585,35 @@ describe('Penelope app', function () {
             expect(transport.find('.title').text()).toBe('Blackstar');
         });
         
+        it('should not set the first track in the queue to active on click play from init', function() {
+            PlaylistQueue.add(data);
+            scope.$digest();
+            transport.find('#play-button').click();
+            expect(PlaylistQueue.activeTrack.title).toBe('Blackstar');        
+        });
 
+        describe('and its http actions', function () {
+            var $httpBackend, $timeout, requestParams;
+            beforeEach(inject(function (_$httpBackend_, _$timeout_) {
+                $httpBackend = _$httpBackend_;
+                $httpBackend.when('GET', 'api/player/start/\/pk\/(.+)/')
+                    .respond(function (method, url, data, headers, params) {
+                        requestParams = params;
+                        return [200, {
+                            status: 'ok'
+                    }];
+                });
+            }));
+
+            afterEach(function () {
+                $httpBackend.verifyNoOutstandingExpectation();
+                $httpBackend.verifyNoOutstandingRequest();
+            });
+            
+            it('should fire an http request when play is clicked', function() {
+                
+            });
+
+        });
     });
 });
