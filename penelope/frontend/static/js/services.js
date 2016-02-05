@@ -3,9 +3,8 @@
 
     var penelopeServices = angular.module('penelopeServices', ['ngResource']);
 
-    penelopeServices.factory('Track', ['$resource',
-        function ($r) {
-            return $r('api/tracks', {}, {
+    penelopeServices.factory('Track', ['$resource', function ($r) {
+        return $r('api/tracks', {}, {
                 query: {
                     method: 'GET'
                 },
@@ -13,6 +12,42 @@
                     method: 'POST'
                 }
             });
+    }]);
+    
+    penelopeServices.factory('Player', ['$http', function($http) {
+        var svc = {};
+        svc.state = {};
+        svc.start = function(pk) {
+            $http({
+                method: 'GET',
+                url: 'api/player/start',
+                params: {'pk':pk}
+            }).then(function success (response) {
+                if (response.status === 200) {
+                    angular.copy(response.data, svc.state);
+                } else {
+                    console.log("Response code: " + response.status);
+                }
+            }, function error (response) {
+               throw "Player: Start threw up " + response.status; 
+            });
+        };
+        svc.pause = function() {
+            $http({
+                method: 'GET',
+                url: 'api/player/pause',
+                params: {}
+            }).then(function success (response) {
+                if (response.status === 200) {
+                    angular.copy(response.data, svc.state);
+                } else {
+                    console.log("Response code: " + response.status);
+                }
+            }, function error (response) {
+               throw "Player: Start threw up " + response.status; 
+            });
+        };
+        return svc;
     }]);
 
     penelopeServices.factory('Library', ['$resource',
@@ -33,9 +68,12 @@
         var position = 0;
         svc.queue = [];
         svc.activeTrack = {};
-        svc.setActive = function(track, pos) {
+        svc.setActive = function (track, pos) {
             svc.position = pos;
-            angular.extend(svc.activeTrack, track, {state: 'playing', time: 0});
+            angular.extend(svc.activeTrack, track, {
+                state: 'playing',
+                time: 0
+            });
         };
         svc.add = function (tracks) {
             if (tracks.constructor !== Array) {

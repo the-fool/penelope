@@ -516,7 +516,7 @@ describe('Penelope app', function () {
 
     describe('transport directive', function () {
         var scope, $compile, transport, transportCtrl;
-        var PlaylistQueue;
+        var PlaylistQueue, Player;
         var data = [
             {
                 title: 'Blackstar',
@@ -555,9 +555,10 @@ describe('Penelope app', function () {
 
         beforeEach(module(tplDir + 'transport.html'));
 
-        beforeEach(inject(function (_$rootScope_, $compile, _PlaylistQueue_) {
+        beforeEach(inject(function (_$rootScope_, $compile, _PlaylistQueue_, _Player_) {
             PlaylistQueue = _PlaylistQueue_;
             PlaylistQueue.add(data);
+            Player = _Player_;
             transport = $('<transport></transport>');
             scope = _$rootScope_.$new();
             $compile(transport)(scope);

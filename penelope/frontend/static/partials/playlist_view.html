@@ -19,6 +19,6 @@
             ng-class="{active: (track.pk === playlistCtrl.active.pk), selected: (track === playlistCtrl.selected)}"
             playlist-row track="track" 
             ng-click="$evalAsync(playlistCtrl.select(track))"
-            ng-dblclick="playlistCtrl.activate(track)"></tr>
+            ng-dblclick="playlistCtrl.activate(track, $index)"></tr>
     </tbody>
 </table>

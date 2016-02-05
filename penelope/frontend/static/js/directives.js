@@ -18,12 +18,20 @@
         };
     });
 
-    penelopeDirectives.directive('transport', ['PlaylistQueue', function (PlaylistQueue) {
+    penelopeDirectives.directive('transport', ['PlaylistQueue', 'Player', function (PlaylistQueue, Player) {
         function ctrl() {
             /*jshint validthis: true */
             this.track = PlaylistQueue.activeTrack;
+
             this.play = function() {
-                
+                if (!this.track.state) {
+                    return;
+                }
+                else if (this.track.state === 'playing') {
+                    Player.start(this.track.pk);
+                } else if (this.track.state === 'paused') {
+                    Player.pause(this.track.pk);
+                }
             };
             this.pause = function() {
                 
@@ -53,7 +61,6 @@
             restrict: 'A',
             scope: {
                 track: '=',
-                onClick: '&',
             },
             link: function ($scope, element, attrs) {
                 /*jshint unused: false */
@@ -79,8 +86,8 @@
             this.select = function (track) {
                 this.selected = track;
             };
-            this.activate = function (track) {
-                PlaylistQueue.setActive(track);
+            this.activate = function (track, pos) {
+                PlaylistQueue.setActive(track, pos);
             };
         }
 
