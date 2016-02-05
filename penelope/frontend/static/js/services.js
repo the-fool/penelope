@@ -4,7 +4,7 @@
     var penelopeServices = angular.module('penelopeServices', ['ngResource']);
 
     penelopeServices.factory('Track', ['$resource', function ($r) {
-        return $r('api/tracks', {}, {
+        return $r('/api/tracks', {}, {
             query: {
                 method: 'GET'
             },
@@ -20,10 +20,7 @@
         svc.start = function (pk) {
             $http({
                 method: 'GET',
-                url: 'api/player/start',
-                params: {
-                    'pk': pk
-                }
+                url: '/api/player/start/' + pk,
             }).then(function success(response) {
                 if (response.status === 200) {
                     angular.copy(response.data, svc.state);
@@ -37,7 +34,7 @@
         svc.pause = function () {
             $http({
                 method: 'GET',
-                url: 'api/player/pause',
+                url: '/api/player/pause',
                 params: {}
             }).then(function success(response) {
                 if (response.status === 200) {
@@ -54,7 +51,7 @@
 
     penelopeServices.factory('Library', ['$resource',
         function ($r) {
-            return $r('api/library', {}, {
+            return $r('/api/library', {}, {
                 query: {
                     method: 'GET',
                     isArray: true

@@ -14,7 +14,7 @@ describe('Penelope app', function () {
         beforeEach(inject(function (_$httpBackend_, _$rootScope_, $compile, _$timeout_) {
             $timeout = _$timeout_;
             $httpBackend = _$httpBackend_;
-            $httpBackend.when('GET', 'api/library').
+            $httpBackend.when('GET', '/api/library').
             respond([
                 {
                     "album": "Blackstar",
@@ -574,6 +574,15 @@ describe('Penelope app', function () {
             transportCtrl = transport.isolateScope().transportCtrl;
         }));
 
+        var $httpBackend, $timeout, requestParams;
+        beforeEach(inject(function (_$httpBackend_, _$timeout_) {
+            $httpBackend = _$httpBackend_;
+        }));
+
+        afterEach(function () {
+            $httpBackend.verifyNoOutstandingExpectation();
+            $httpBackend.verifyNoOutstandingRequest();
+        });
 
         it('should sync with PlaylistQueue active track', function () {
             expect(Object.keys(transportCtrl.track).length).toBe(0);
@@ -584,34 +593,20 @@ describe('Penelope app', function () {
             expect(transportCtrl.track.title).toBe('Blackstar');
             expect(transport.find('.title').text()).toBe('Blackstar');
         });
-        
-        it('should not set the first track in the queue to active on click play from init', function() {
+
+        it('should not set the first track in the queue to active on click play from init', function () {
             PlaylistQueue.add(data);
             scope.$digest();
+            $httpBackend.expectGET('/api/player/start/14').respond(200);
             transport.find('#play-button').click();
-            expect(PlaylistQueue.activeTrack.title).toBe('Blackstar');        
+            $httpBackend.flush();
+            expect(PlaylistQueue.activeTrack.title).toBe('Blackstar');
         });
 
         describe('and its http actions', function () {
-            var $httpBackend, $timeout, requestParams;
-            beforeEach(inject(function (_$httpBackend_, _$timeout_) {
-                $httpBackend = _$httpBackend_;
-                $httpBackend.when('GET', 'api/player/start/\/pk\/(.+)/')
-                    .respond(function (method, url, data, headers, params) {
-                        requestParams = params;
-                        return [200, {
-                            status: 'ok'
-                    }];
-                });
-            }));
 
-            afterEach(function () {
-                $httpBackend.verifyNoOutstandingExpectation();
-                $httpBackend.verifyNoOutstandingRequest();
-            });
-            
-            it('should fire an http request when play is clicked', function() {
-                
+            it('should fire an http request when play is clicked', function () {
+
             });
 
         });
